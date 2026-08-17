@@ -32,6 +32,14 @@ public class Doge {
                 System.out.println("    Nice! I've marked this task as done:");
                 System.out.println("      [X] " + tasks[taskNumber - 1]);
                 System.out.println(SEPARATOR);
+            } else if (commands.length == 2 && commands[0].equals("unmark")) {
+                String number = commands[1];
+                int taskNumber = Integer.parseInt(number);
+                isDone[taskNumber - 1] = false;
+                System.out.println(SEPARATOR);
+                System.out.println("    OK, I've marked this task as not done yet:");
+                System.out.println("      [ ] " + tasks[taskNumber - 1]);
+                System.out.println(SEPARATOR);
             } else if (text.equals("bye")) {
                 System.out.println(SEPARATOR);
                 System.out.println("    Bye. Hope to see you again soon!");
