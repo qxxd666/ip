@@ -1,10 +1,17 @@
 public class Doge {
     public static void main(String[] args) {
-        String banner = "   ____   ___   ____ _____\n" +
+        final String banner = "   ____   ___   ____ _____\n" +
                 "  |  _ \\ / _ \\ / ___| ____|\n" +
                 "  | | | | | | | |  _|  _|\n" +
                 "  | |_| | |_| | |_| | |___\n" +
                 "  |____/ \\___/ \\____|_____|";
+        String separator = "____________________________________________________________";
+        System.out.println(separator);
         System.out.println(banner);
+        System.out.println("Hello! I'm Doge.");
+        System.out.println("What can I do for you?");
+        System.out.println(separator);
+        System.out.println("Bye. Hope to see you again soon!");
+        System.out.println(separator);
     }
 }
