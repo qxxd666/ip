@@ -16,8 +16,7 @@ public class Doge {
         System.out.println(SEPARATOR);
 
         Scanner scanner = new Scanner(System.in);
-        String[] tasks = new String[100];
-        boolean[] isDone = new boolean[100];
+        Task[] tasks = new Task[100];
         int taskCount = 0;
 
         while (true) {
@@ -27,18 +26,18 @@ public class Doge {
             if (commands.length == 2 && commands[0].equals("mark")) {
                 String number = commands[1];
                 int taskNumber = Integer.parseInt(number);
-                isDone[taskNumber - 1] = true;
+                tasks[taskNumber - 1].markDone();
                 System.out.println(SEPARATOR);
                 System.out.println("    Nice! I've marked this task as done:");
-                System.out.println("      [X] " + tasks[taskNumber - 1]);
+                System.out.println("      " + tasks[taskNumber - 1]);
                 System.out.println(SEPARATOR);
             } else if (commands.length == 2 && commands[0].equals("unmark")) {
                 String number = commands[1];
                 int taskNumber = Integer.parseInt(number);
-                isDone[taskNumber - 1] = false;
+                tasks[taskNumber - 1].unmarkDone();
                 System.out.println(SEPARATOR);
                 System.out.println("    OK, I've marked this task as not done yet:");
-                System.out.println("      [ ] " + tasks[taskNumber - 1]);
+                System.out.println("      " + tasks[taskNumber - 1]);
                 System.out.println(SEPARATOR);
             } else if (text.equals("bye")) {
                 System.out.println(SEPARATOR);
@@ -49,12 +48,11 @@ public class Doge {
                 System.out.println(SEPARATOR);
                 System.out.println("    Here are the tasks in your list:");
                 for (int i = 0; i < taskCount; i++) {
-                    String status = isDone[i] ? "[X]" : "[ ]";
-                    System.out.println("    " + (i + 1) + "." + status + " " + tasks[i]);
+                    System.out.println("    " + (i + 1) + "." + tasks[i]);
                 }
                 System.out.println(SEPARATOR);
             } else {
-                tasks[taskCount++] = text;
+                tasks[taskCount++] = new Task(text);
                 System.out.println(SEPARATOR);
                 System.out.println("    added: " + text);
                 System.out.println(SEPARATOR);
