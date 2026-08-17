@@ -16,6 +16,8 @@ public class Doge {
         System.out.println(SEPARATOR);
 
         Scanner scanner = new Scanner(System.in);
+        String[] tasks = new String[100];
+        int taskCount = 0;
 
         while (true) {
             System.out.println();
@@ -25,7 +27,14 @@ public class Doge {
                 System.out.println("    Bye. Hope to see you again soon!");
                 System.out.println(SEPARATOR);
                 break;
+            } else if (text.equals("list")) {
+                System.out.println(SEPARATOR);
+                for (int i = 0; i < taskCount; i++) {
+                    System.out.println("    " + (i + 1) + ". " + tasks[i]);
+                }
+                System.out.println(SEPARATOR);
             } else {
+                tasks[taskCount++] = text;
                 System.out.println(SEPARATOR);
                 System.out.println("    added: " + text);
                 System.out.println(SEPARATOR);
