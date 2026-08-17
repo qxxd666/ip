@@ -13,6 +13,9 @@ src/main/resources/docs/
 *.iml
 bin/
 
+# Java Class Files
+*.class
+
 # Temp files
 _temp/
 
