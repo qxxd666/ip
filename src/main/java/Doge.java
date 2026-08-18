@@ -25,7 +25,17 @@ public class Doge {
             String[] commands = text.split(" ");
             if (commands.length == 2 && commands[0].equals("mark")) {
                 String number = commands[1];
-                int taskNumber = Integer.parseInt(number);
+                int taskNumber;
+                try {
+                    taskNumber = Integer.parseInt(number);
+                } catch (NumberFormatException e) {
+                    System.out.println("    Please enter a valid task number.");
+                    continue;
+                }
+                if (taskNumber < 1 || taskNumber > taskCount) {
+                    System.out.println("    That task number does not exist.");
+                    continue;
+                }
                 tasks[taskNumber - 1].markDone();
                 System.out.println(SEPARATOR);
                 System.out.println("    Nice! I've marked this task as done:");
@@ -33,7 +43,17 @@ public class Doge {
                 System.out.println(SEPARATOR);
             } else if (commands.length == 2 && commands[0].equals("unmark")) {
                 String number = commands[1];
-                int taskNumber = Integer.parseInt(number);
+                int taskNumber;
+                try {
+                    taskNumber = Integer.parseInt(number);
+                } catch (NumberFormatException e) {
+                    System.out.println("    Please enter a valid task number.");
+                    continue;
+                }
+                if (taskNumber < 1 || taskNumber > taskCount) {
+                    System.out.println("    That task number does not exist.");
+                    continue;
+                }
                 tasks[taskNumber - 1].unmarkDone();
                 System.out.println(SEPARATOR);
                 System.out.println("    OK, I've marked this task as not done yet:");
