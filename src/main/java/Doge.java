@@ -20,17 +20,25 @@ public class Doge {
         Scanner scanner = new Scanner(System.in);
         List<Task> tasks = new ArrayList<>();
 
+        mainLoop:
         while (true) {
             System.out.println();
             String text = scanner.nextLine().trim();
             String[] commands = text.split(" ");
-            if (commands.length == 2 && commands[0].equals("mark")) {
+            switch (commands[0]) {
+            case "mark" -> {
+                if (commands.length != 2) {
+                    addTask(text, tasks, SEPARATOR);
+                    continue;
+                }
                 String number = commands[1];
                 int taskNumber;
                 try {
                     taskNumber = validateTaskNumber(number, tasks);
                 } catch (DogeException e) {
+                    System.out.println(SEPARATOR);
                     System.out.println("    " + e.getMessage());
+                    System.out.println(SEPARATOR);
                     continue;
                 }
                 tasks.get(taskNumber - 1).markDone();
@@ -38,13 +46,20 @@ public class Doge {
                 System.out.println("    Nice! I've marked this task as done:");
                 System.out.println("      " + tasks.get(taskNumber - 1));
                 System.out.println(SEPARATOR);
-            } else if (commands.length == 2 && commands[0].equals("unmark")) {
+            }
+            case "unmark" -> {
+                if (commands.length != 2) {
+                    addTask(text, tasks, SEPARATOR);
+                    continue;
+                }
                 String number = commands[1];
                 int taskNumber;
                 try {
                     taskNumber = validateTaskNumber(number, tasks);
                 } catch (DogeException e) {
+                    System.out.println(SEPARATOR);
                     System.out.println("    " + e.getMessage());
+                    System.out.println(SEPARATOR);
                     continue;
                 }
                 tasks.get(taskNumber - 1).unmarkDone();
@@ -52,36 +67,50 @@ public class Doge {
                 System.out.println("    OK, I've marked this task as not done yet:");
                 System.out.println("      " + tasks.get(taskNumber - 1));
                 System.out.println(SEPARATOR);
-            } else if (text.equals("bye")) {
+            }
+            case "bye" -> {
+                if (commands.length != 1) {
+                    addTask(text, tasks, SEPARATOR);
+                    continue;
+                }
                 System.out.println(SEPARATOR);
                 System.out.println("    Bye. Hope to see you again soon!");
                 System.out.println(SEPARATOR);
-                break;
-            } else if (text.equals("list")) {
+                break mainLoop;
+            }
+            case "list" -> {
+                if (commands.length != 1) {
+                    addTask(text, tasks, SEPARATOR);
+                    continue;
+                }
                 System.out.println(SEPARATOR);
                 System.out.println("    Here are the tasks in your list:");
                 for (int i = 0; i < tasks.size(); i++) {
                     System.out.println("    " + (i + 1) + "." + tasks.get(i));
                 }
                 System.out.println(SEPARATOR);
-            } else {
-                try {
-                    Task task = Parser.parseTask(text);
-                    tasks.add(task);
-
-                    System.out.println(SEPARATOR);
-                    System.out.println("    Woof! I have added: " + task);
-                    System.out.println("    Now you have " + tasks.size() + " tasks in the list.");
-                    System.out.println(SEPARATOR);
-                } catch (DogeException e) {
-                    System.out.println(SEPARATOR);
-                    System.out.println("    " + e.getMessage());
-                    System.out.println(SEPARATOR);
-                }
+            }
+            default -> addTask(text, tasks, SEPARATOR);
             }
         }
     }
-    
+
+    private static void addTask(String text, List<Task> tasks, String separator) {
+        try {
+            Task task = Parser.parseTask(text);
+            tasks.add(task);
+
+            System.out.println(separator);
+            System.out.println("    Woof! I have added: " + task);
+            System.out.println("    Now you have " + tasks.size() + " tasks in the list.");
+            System.out.println(separator);
+        } catch (DogeException e) {
+            System.out.println(separator);
+            System.out.println("    " + e.getMessage());
+            System.out.println(separator);
+        }
+    }
+
     private static int validateTaskNumber(String numberText, List<Task> tasks) throws DogeException {
         int taskNumber;
 
