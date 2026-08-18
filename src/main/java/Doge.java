@@ -52,13 +52,19 @@ public class Doge {
                 }
                 System.out.println(SEPARATOR);
             } else {
-                Task task = Parser.parseTask(text);
-                tasks[taskCount++] = task;
+                try {
+                    Task task = Parser.parseTask(text);
+                    tasks[taskCount++] = task;
 
-                System.out.println(SEPARATOR);
-                System.out.println("    Woof! I have added: " + task);
-                System.out.println("    Now you have " + taskCount + " tasks in the list.");
-                System.out.println(SEPARATOR);
+                    System.out.println(SEPARATOR);
+                    System.out.println("    Woof! I have added: " + task);
+                    System.out.println("    Now you have " + taskCount + " tasks in the list.");
+                    System.out.println(SEPARATOR);
+                } catch (DogeException e) {
+                    System.out.println(SEPARATOR);
+                    System.out.println("    " + e.getMessage());
+                    System.out.println(SEPARATOR);
+                }
             }
         }
     }

@@ -3,7 +3,7 @@ public class Parser {
 
     }
 
-    public static Task parseTask(String input) {
+    public static Task parseTask(String input) throws DogeException {
         String[] commandAndArguments = input.trim().split("\\s+", 2);
 
         String command = commandAndArguments[0];
@@ -18,8 +18,10 @@ public class Parser {
             case "event" -> {
                 return parseEvent(arguments);
             }
+            default -> {
+                throw new DogeException("I don't understand that command");
+            }
         }
-        return null;
     }
 
     private static Todo parseTodo(String description) {
