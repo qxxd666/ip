@@ -11,7 +11,7 @@ public class Doge {
 
         System.out.println(SEPARATOR);
         System.out.println(BANNER);
-        System.out.println("    Hello! I'm Doge.");
+        System.out.println("    Rawr! I'm Doge.");
         System.out.println("    What can I do for you?");
         System.out.println(SEPARATOR);
 
@@ -52,9 +52,12 @@ public class Doge {
                 }
                 System.out.println(SEPARATOR);
             } else {
-                tasks[taskCount++] = new Task(text);
+                Task task = Parser.parseTask(text);
+                tasks[taskCount++] = task;
+
                 System.out.println(SEPARATOR);
-                System.out.println("    added: " + text);
+                System.out.println("    Woof! I have added: " + task);
+                System.out.println("    Now you have " + taskCount + " tasks in the list.");
                 System.out.println(SEPARATOR);
             }
         }
