@@ -28,13 +28,9 @@ public class Doge {
                 String number = commands[1];
                 int taskNumber;
                 try {
-                    taskNumber = Integer.parseInt(number);
-                } catch (NumberFormatException e) {
-                    System.out.println("    Please enter a valid task number.");
-                    continue;
-                }
-                if (taskNumber < 1 || taskNumber > tasks.size()) {
-                    System.out.println("    That task number does not exist.");
+                    taskNumber = validateTaskNumber(number, tasks);
+                } catch (DogeException e) {
+                    System.out.println("    " + e.getMessage());
                     continue;
                 }
                 tasks.get(taskNumber - 1).markDone();
@@ -46,13 +42,9 @@ public class Doge {
                 String number = commands[1];
                 int taskNumber;
                 try {
-                    taskNumber = Integer.parseInt(number);
-                } catch (NumberFormatException e) {
-                    System.out.println("    Please enter a valid task number.");
-                    continue;
-                }
-                if (taskNumber < 1 || taskNumber > tasks.size()) {
-                    System.out.println("    That task number does not exist.");
+                    taskNumber = validateTaskNumber(number, tasks);
+                } catch (DogeException e) {
+                    System.out.println("    " + e.getMessage());
                     continue;
                 }
                 tasks.get(taskNumber - 1).unmarkDone();
@@ -88,5 +80,21 @@ public class Doge {
                 }
             }
         }
+    }
+    
+    private static int validateTaskNumber(String numberText, List<Task> tasks) throws DogeException {
+        int taskNumber;
+
+        try {
+            taskNumber = Integer.parseInt(numberText);
+        } catch (NumberFormatException e) {
+            throw new DogeException("Please enter a valid task number.");
+        }
+
+        if (taskNumber < 1 || taskNumber > tasks.size()) {
+            throw new DogeException("That task number does not exist.");
+        }
+
+        return taskNumber;
     }
 }
