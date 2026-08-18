@@ -4,7 +4,7 @@ public class Parser {
     }
 
     public static Task parseTask(String input) {
-        String[] commandAndArguments = input.trim().split(" ", 2);
+        String[] commandAndArguments = input.trim().split("\\s+", 2);
 
         String command = commandAndArguments[0];
         String arguments = commandAndArguments.length == 2 ? commandAndArguments[1] : "";
@@ -27,13 +27,13 @@ public class Parser {
     }
 
     private static Deadline parseDeadline(String description) {
-        String[] parts = description.split("/by", 2);
+        String[] parts = description.split("\\s+/by\\s+", 2);
         return new Deadline(parts[0], parts[1]);
     }
 
     private static Event parseEvent(String description) {
-        String[] fromParts = description.split("/from", 2);
-        String[] toParts = fromParts[1].split("/to", 2);
+        String[] fromParts = description.split("\\s+/from\\s+", 2);
+        String[] toParts = fromParts[1].split("\\s+/to\\s+", 2);
         return new Event(fromParts[0], toParts[0], toParts[1]);
     }
 }
