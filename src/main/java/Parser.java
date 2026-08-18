@@ -6,22 +6,15 @@ public class Parser {
     public static Task parseTask(String input) throws DogeException {
         String[] commandAndArguments = input.trim().split("\\s+", 2);
 
-        String command = commandAndArguments[0];
+        Command command = Command.fromText(commandAndArguments[0]);
         String arguments = commandAndArguments.length == 2 ? commandAndArguments[1] : "";
-        switch (command) {
-            case "todo" -> {
-                return parseTodo(arguments);
-            }
-            case "deadline" -> {
-                return parseDeadline(arguments);
-            }
-            case "event" -> {
-                return parseEvent(arguments);
-            }
-            default -> {
+        return switch (command) {
+        case TODO -> parseTodo(arguments);
+        case DEADLINE -> parseDeadline(arguments);
+        case EVENT -> parseEvent(arguments);
+        case MARK, UNMARK, LIST, BYE, DELETE ->
                 throw new DogeException("I don't understand that command");
-            }
-        }
+        };
     }
 
     private static Todo parseTodo(String description) throws DogeException {

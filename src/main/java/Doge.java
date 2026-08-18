@@ -100,7 +100,27 @@ public class Doge {
                 }
                 System.out.println(SEPARATOR);
             }
-            default -> addTask(text, tasks, SEPARATOR);
+            case DELETE -> {
+                if (commands.length != 2) {
+                    printError("Use this format: delete TASK_NUMBER", SEPARATOR);
+                    continue;
+                }
+                int taskNumber;
+                try {
+                    taskNumber = validateTaskNumber(commands[1], tasks);
+                } catch (DogeException e) {
+                    System.out.println(SEPARATOR);
+                    System.out.println("    " + e.getMessage());
+                    System.out.println(SEPARATOR);
+                    continue;
+                }
+                String delTask = tasks.get(taskNumber - 1).toString();
+                tasks.remove(taskNumber - 1);
+                System.out.println(SEPARATOR);
+                System.out.println("    Successfully deleted task: " + delTask);
+                System.out.println(SEPARATOR);
+            }
+            case TODO, DEADLINE, EVENT -> addTask(text, tasks, SEPARATOR);
             }
         }
     }
