@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Doge {
@@ -16,8 +18,7 @@ public class Doge {
         System.out.println(SEPARATOR);
 
         Scanner scanner = new Scanner(System.in);
-        Task[] tasks = new Task[100];
-        int taskCount = 0;
+        List<Task> tasks = new ArrayList<>();
 
         while (true) {
             System.out.println();
@@ -32,14 +33,14 @@ public class Doge {
                     System.out.println("    Please enter a valid task number.");
                     continue;
                 }
-                if (taskNumber < 1 || taskNumber > taskCount) {
+                if (taskNumber < 1 || taskNumber > tasks.size()) {
                     System.out.println("    That task number does not exist.");
                     continue;
                 }
-                tasks[taskNumber - 1].markDone();
+                tasks.get(taskNumber - 1).markDone();
                 System.out.println(SEPARATOR);
                 System.out.println("    Nice! I've marked this task as done:");
-                System.out.println("      " + tasks[taskNumber - 1]);
+                System.out.println("      " + tasks.get(taskNumber - 1));
                 System.out.println(SEPARATOR);
             } else if (commands.length == 2 && commands[0].equals("unmark")) {
                 String number = commands[1];
@@ -50,14 +51,14 @@ public class Doge {
                     System.out.println("    Please enter a valid task number.");
                     continue;
                 }
-                if (taskNumber < 1 || taskNumber > taskCount) {
+                if (taskNumber < 1 || taskNumber > tasks.size()) {
                     System.out.println("    That task number does not exist.");
                     continue;
                 }
-                tasks[taskNumber - 1].unmarkDone();
+                tasks.get(taskNumber - 1).unmarkDone();
                 System.out.println(SEPARATOR);
                 System.out.println("    OK, I've marked this task as not done yet:");
-                System.out.println("      " + tasks[taskNumber - 1]);
+                System.out.println("      " + tasks.get(taskNumber - 1));
                 System.out.println(SEPARATOR);
             } else if (text.equals("bye")) {
                 System.out.println(SEPARATOR);
@@ -67,18 +68,18 @@ public class Doge {
             } else if (text.equals("list")) {
                 System.out.println(SEPARATOR);
                 System.out.println("    Here are the tasks in your list:");
-                for (int i = 0; i < taskCount; i++) {
-                    System.out.println("    " + (i + 1) + "." + tasks[i]);
+                for (int i = 0; i < tasks.size(); i++) {
+                    System.out.println("    " + (i + 1) + "." + tasks.get(i));
                 }
                 System.out.println(SEPARATOR);
             } else {
                 try {
                     Task task = Parser.parseTask(text);
-                    tasks[taskCount++] = task;
+                    tasks.add(task);
 
                     System.out.println(SEPARATOR);
                     System.out.println("    Woof! I have added: " + task);
-                    System.out.println("    Now you have " + taskCount + " tasks in the list.");
+                    System.out.println("    Now you have " + tasks.size() + " tasks in the list.");
                     System.out.println(SEPARATOR);
                 } catch (DogeException e) {
                     System.out.println(SEPARATOR);
