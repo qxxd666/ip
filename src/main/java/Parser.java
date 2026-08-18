@@ -24,7 +24,10 @@ public class Parser {
         }
     }
 
-    private static Todo parseTodo(String description) {
+    private static Todo parseTodo(String description) throws DogeException {
+        if (description.isEmpty()) {
+            throw new DogeException("Todo cannot be empty! Use this format: todo DESCRIPTION");
+        }
         return new Todo(description);
     }
 
