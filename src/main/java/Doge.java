@@ -25,10 +25,20 @@ public class Doge {
             System.out.println();
             String text = scanner.nextLine().trim();
             String[] commands = text.split(" ");
-            switch (commands[0]) {
-            case "mark" -> {
+            Command command;
+            try {
+                command = Command.fromText(commands[0]);
+            } catch (DogeException e) {
+                System.out.println(SEPARATOR);
+                System.out.println("    " + e.getMessage());
+                System.out.println(SEPARATOR);
+                continue;
+            }
+
+            switch (command) {
+            case MARK -> {
                 if (commands.length != 2) {
-                    addTask(text, tasks, SEPARATOR);
+                    printError("Use this format: mark TASK_NUMBER", SEPARATOR);
                     continue;
                 }
                 String number = commands[1];
@@ -47,9 +57,9 @@ public class Doge {
                 System.out.println("      " + tasks.get(taskNumber - 1));
                 System.out.println(SEPARATOR);
             }
-            case "unmark" -> {
+            case UNMARK -> {
                 if (commands.length != 2) {
-                    addTask(text, tasks, SEPARATOR);
+                    printError("Use this format: unmark TASK_NUMBER", SEPARATOR);
                     continue;
                 }
                 String number = commands[1];
@@ -68,9 +78,9 @@ public class Doge {
                 System.out.println("      " + tasks.get(taskNumber - 1));
                 System.out.println(SEPARATOR);
             }
-            case "bye" -> {
+            case BYE -> {
                 if (commands.length != 1) {
-                    addTask(text, tasks, SEPARATOR);
+                    printError("The bye command does not take any arguments.", SEPARATOR);
                     continue;
                 }
                 System.out.println(SEPARATOR);
@@ -78,9 +88,9 @@ public class Doge {
                 System.out.println(SEPARATOR);
                 break mainLoop;
             }
-            case "list" -> {
+            case LIST -> {
                 if (commands.length != 1) {
-                    addTask(text, tasks, SEPARATOR);
+                    printError("The list command does not take any arguments.", SEPARATOR);
                     continue;
                 }
                 System.out.println(SEPARATOR);
@@ -109,6 +119,12 @@ public class Doge {
             System.out.println("    " + e.getMessage());
             System.out.println(separator);
         }
+    }
+
+    private static void printError(String message, String separator) {
+        System.out.println(separator);
+        System.out.println("    " + message);
+        System.out.println(separator);
     }
 
     private static int validateTaskNumber(String numberText, List<Task> tasks) throws DogeException {
