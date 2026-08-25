@@ -1,3 +1,8 @@
+package doge.ui;
+
+import doge.model.Task;
+import doge.model.TaskList;
+
 import java.util.Scanner;
 
 public class UI {

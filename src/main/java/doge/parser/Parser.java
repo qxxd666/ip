@@ -1,3 +1,12 @@
+package doge.parser;
+
+import doge.model.Deadline;
+import doge.model.Event;
+import doge.model.Task;
+import doge.model.Todo;
+import doge.command.Command;
+import doge.exception.DogeException;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;

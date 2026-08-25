@@ -1,3 +1,7 @@
+package doge.command;
+
+import doge.exception.DogeException;
+
 public enum Command {
     TODO("todo"),
     DEADLINE("deadline"),

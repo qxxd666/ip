@@ -1,3 +1,13 @@
+package doge;
+
+import doge.command.Command;
+import doge.exception.DogeException;
+import doge.model.Task;
+import doge.model.TaskList;
+import doge.parser.Parser;
+import doge.storage.Storage;
+import doge.ui.UI;
+
 public class Doge {
 
     private static UI ui;
@@ -37,7 +47,7 @@ public class Doge {
 
     private static void processInput(String input) throws DogeException {
         String[] commands = input.split("\\s+");
-        Command command = Command.fromText(commands[0]);;
+        Command command = Command.fromText(commands[0]);
         switch (command) {
 
             case MARK -> {
