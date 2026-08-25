@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class TaskListTest {
 
     @Test
+    /** Verifies that a new task list starts empty. */
     void constructor_newTaskList_hasNoTasks() {
         TaskList tasks = new TaskList();
 
@@ -20,6 +21,7 @@ class TaskListTest {
     }
 
     @Test
+    /** Verifies that adding a task increases the list size. */
     void add_taskProvided_increasesListSize() {
         TaskList tasks = new TaskList();
 
@@ -29,6 +31,7 @@ class TaskListTest {
     }
 
     @Test
+    /** Verifies that tasks are retrieved using one-based indexes. */
     void get_taskIndexProvided_returnsTaskAtOneBasedIndex() {
         TaskList tasks = new TaskList();
         Task firstTask = new Todo("First task");
@@ -41,6 +44,7 @@ class TaskListTest {
     }
 
     @Test
+    /** Verifies that deleting a task removes and returns the selected task. */
     void delete_taskIndexProvided_removesAndReturnsTask() {
         TaskList tasks = new TaskList();
         Task firstTask = new Todo("First task");
@@ -56,6 +60,7 @@ class TaskListTest {
     }
 
     @Test
+    /** Verifies that tasks are returned in insertion order. */
     void getTasks_taskListHasTasks_returnsTasksInInsertionOrder() {
         TaskList tasks = new TaskList();
         Task firstTask = new Todo("First task");
@@ -69,6 +74,7 @@ class TaskListTest {
     }
 
     @Test
+    /** Verifies that the selected task can be marked as done. */
     void markDone_taskIndexProvided_marksTaskAsDone() {
         TaskList tasks = new TaskList();
         tasks.add(new Todo("Read about JUnit"));
@@ -79,6 +85,7 @@ class TaskListTest {
     }
 
     @Test
+    /** Verifies that the selected task can be marked as not done. */
     void unmarkDone_taskIndexProvided_marksTaskAsNotDone() {
         TaskList tasks = new TaskList();
         tasks.add(new Todo("Read about JUnit"));
@@ -90,6 +97,7 @@ class TaskListTest {
     }
 
     @Test
+    /** Verifies the display of an empty task list. */
     void toString_emptyTaskList_returnsHeaderOnly() {
         TaskList tasks = new TaskList();
 
@@ -97,6 +105,7 @@ class TaskListTest {
     }
 
     @Test
+    /** Verifies the numbered display of a non-empty task list. */
     void toString_taskListHasTasks_returnsNumberedTaskList() {
         TaskList tasks = new TaskList();
         tasks.add(new Todo("First task"));

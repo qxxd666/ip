@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/** Converts user-entered task commands into task objects. */
 public class Parser {
 
     private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("d/M/uuuu HHmm");
@@ -18,6 +19,7 @@ public class Parser {
     private Parser() {
     }
 
+    /** Parses a todo, deadline, or event command into its corresponding task. */
     public static Task parseTask(String input) throws DogeException {
         String[] commandAndArguments = input.trim().split("\\s+", 2);
 
@@ -32,6 +34,7 @@ public class Parser {
         };
     }
 
+    /** Parses the description of a todo and rejects empty descriptions. */
     private static Todo parseTodo(String description) throws DogeException {
         if (description.isEmpty()) {
             throw new DogeException("Todo cannot be empty! Use this format: todo DESCRIPTION");
@@ -39,6 +42,7 @@ public class Parser {
         return new Todo(description);
     }
 
+    /** Parses a deadline description and its {@code /by} date and time. */
     private static Deadline parseDeadline(String description) throws DogeException {
         String[] parts = description.split("\\s+/by\\s+", 2);
 
@@ -56,6 +60,7 @@ public class Parser {
         }
     }
 
+    /** Parses an event description and its {@code /from} and {@code /to} times. */
     private static Event parseEvent(String description) throws DogeException {
         String[] fromParts = description.split("\\s+/from\\s+", 2);
         if (fromParts.length != 2 || fromParts[0].isBlank() || fromParts[1].isBlank()) {

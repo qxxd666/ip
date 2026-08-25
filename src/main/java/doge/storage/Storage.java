@@ -14,9 +14,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/** Reads and writes tasks using the application's local data file. */
 public class Storage {
     private static final Path DATA_FILE = Path.of("data", "tasks.txt");
 
+    /** Saves all tasks to disk, replacing the existing data file. */
     public void save(TaskList taskList) throws DogeException {
         try {
             Files.createDirectories(DATA_FILE.getParent());
@@ -40,6 +42,7 @@ public class Storage {
         }
     }
 
+    /** Loads tasks from disk, returning an empty list when no data file exists. */
     public TaskList load() throws DogeException {
         TaskList taskList = new TaskList();
 
@@ -62,6 +65,7 @@ public class Storage {
         }
     }
 
+    /** Converts one persisted task line into a task object with its saved status. */
     private Task convertLineToTask(String line) throws DogeException {
         String[] parts = line.split("\\s*\\|\\s*", -1);
         if (parts.length < 3) {

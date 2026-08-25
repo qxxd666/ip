@@ -8,12 +8,14 @@ import doge.parser.Parser;
 import doge.storage.Storage;
 import doge.ui.UI;
 
+/** Runs the Doge task-management application and coordinates its components. */
 public class Doge {
 
     private static UI ui;
     private static TaskList tasks;
     private static Storage storage;
 
+    /** Starts the command-line application and processes commands until the user exits. */
     public static void main(String[] args) {
         ui = new UI();
         storage = new Storage();
@@ -45,6 +47,7 @@ public class Doge {
         }
     }
 
+    /** Executes a single user command after parsing its command keyword and arguments. */
     private static void processInput(String input) throws DogeException {
         String[] commands = input.split("\\s+");
         Command command = Command.fromText(commands[0]);
@@ -78,6 +81,7 @@ public class Doge {
         }
     }
 
+    /** Extracts and validates the one-based task number from a command. */
     private static int getTaskNumber(String[] commands) throws DogeException {
         if (commands.length < 2 || commands[1].isBlank()) {
             throw new DogeException("Please provide a task number.");
@@ -85,6 +89,7 @@ public class Doge {
         return validateTaskNumber(commands[1]);
     }
 
+    /** Parses a task command, adds the resulting task, and reports parsing errors. */
     private static void addTask(String text) {
         try {
             Task task = Parser.parseTask(text);
@@ -95,6 +100,7 @@ public class Doge {
         }
     }
 
+    /** Converts a task number to an integer and verifies that it exists in the task list. */
     private static int validateTaskNumber(String numberText) throws DogeException {
         int taskNumber;
 
