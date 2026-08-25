@@ -1,6 +1,12 @@
-public class Parser {
-    private Parser() {
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
+public class Parser {
+
+    private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("d/M/uuuu HHmm");
+
+    private Parser() {
     }
 
     public static Task parseTask(String input) throws DogeException {
@@ -26,10 +32,19 @@ public class Parser {
 
     private static Deadline parseDeadline(String description) throws DogeException {
         String[] parts = description.split("\\s+/by\\s+", 2);
-        if (parts.length != 2 || parts[0].isBlank() || parts[1].isBlank()) {
-            throw new DogeException("Use this format: deadline DESCRIPTION /by DATE");
+
+        if (parts.length != 2 || parts[0].isBlank() ||
+                parts[1].isBlank()) {
+            throw new DogeException(
+                    "Use this format: deadline DESCRIPTION /by d/M/yyyy HHmm");
         }
-        return new Deadline(parts[0], parts[1]);
+
+        try {
+            LocalDateTime deadline = LocalDateTime.parse(parts[1].trim(), INPUT_FORMATTER);
+            return new Deadline(parts[0], deadline);
+        } catch (DateTimeParseException e) {
+            throw new DogeException("Please enter the deadline as d/M/yyyy HHmm.");
+        }
     }
 
     private static Event parseEvent(String description) throws DogeException {
@@ -44,6 +59,12 @@ public class Parser {
             throw new DogeException("Use this format: event DESCRIPTION /from START /to END");
         }
 
-        return new Event(fromParts[0], toParts[0], toParts[1]);
+        try {
+            LocalDateTime start = LocalDateTime.parse(toParts[0].trim(), INPUT_FORMATTER);
+            LocalDateTime end = LocalDateTime.parse(toParts[1].trim(), INPUT_FORMATTER);
+            return new Event(fromParts[0], start, end);
+        } catch (DateTimeParseException e) {
+            throw new DogeException("Please enter event dates as d/M/yyyy HHmm.");
+        }
     }
 }
