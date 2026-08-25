@@ -1,6 +1,8 @@
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,15 +16,19 @@ public class Storage {
             List<String> lines = new ArrayList<>();
 
             for (Task task : taskList.getTasks()) {
-                lines.add(convertTaskToLine(task));
+                lines.add(task.toStorageString());
             }
+
+            Files.write(
+                    DATA_FILE,
+                    lines,
+                    StandardCharsets.UTF_8,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING
+            );
+
         } catch (IOException e) {
             throw new DogeException("Could not save tasks.");
         }
-    }
-
-    private String convertTaskToLine(Task task) {
-        String status = task.isDone() ? "1" : "0";
-
     }
 }
