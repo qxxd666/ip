@@ -3,12 +3,14 @@ package doge.model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/** Represents a task that must be completed by a specified date and time. */
 public class Deadline extends Task {
-    private LocalDateTime by;
+    private final LocalDateTime by;
 
     private static final DateTimeFormatter DISPLAY_FORMATTER =
             DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
 
+    /** Creates a deadline task with the given description and deadline. */
     public Deadline(String description, LocalDateTime by) {
         super(description);
         this.by = by;

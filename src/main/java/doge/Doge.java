@@ -8,22 +8,25 @@ import doge.parser.Parser;
 import doge.storage.Storage;
 import doge.ui.UI;
 
+/** Runs the Doge task management application. */
 public class Doge {
 
-    private static UI ui;
-    private static TaskList tasks;
-    private static Storage storage;
+    private final UI ui;
+    private final TaskList tasks;
+    private final Storage storage;
 
+    /** Starts the application. */
     public static void main(String[] args) {
+        new Doge().run();
+    }
+
+    private Doge() {
         ui = new UI();
         storage = new Storage();
+        tasks = loadTasks();
+    }
 
-        try {
-            tasks = storage.load();
-        } catch (DogeException e) {
-            ui.printMessage(e.getMessage());
-        }
-        
+    private void run() {
         ui.showWelcome();
 
         while (true) {
@@ -33,6 +36,7 @@ public class Doge {
             } catch (DogeException e) {
                 ui.printMessage(e.getMessage());
             }
+
             if (text.equals("bye")) {
                 try {
                     storage.save(tasks);
@@ -45,47 +49,44 @@ public class Doge {
         }
     }
 
-    private static void processInput(String input) throws DogeException {
+    private void processInput(String input) throws DogeException {
         String[] commands = input.split("\\s+");
         Command command = Command.fromText(commands[0]);
+
         switch (command) {
-
-            case MARK -> {
-                int taskNumber = getTaskNumber(commands);
-                Task task = tasks.get(taskNumber);
-                task.markDone();
-                ui.showTaskMarked(task);
-            }
-
-            case UNMARK -> {
-                int taskNumber = getTaskNumber(commands);
-                Task task = tasks.get(taskNumber);
-                task.unmarkDone();
-                ui.showTaskUnmarked(task);
-            }
-
-            case LIST -> {
-                ui.printTaskList(tasks);
-            }
-
-            case DELETE -> {
-                int taskNumber = getTaskNumber(commands);
-                Task delTask = tasks.delete(taskNumber);
-                ui.printMessage("    Successfully deleted task: " + delTask);
-            }
-            case TODO, DEADLINE, EVENT -> addTask(input);
-
+        case MARK -> {
+            int taskNumber = getTaskNumber(commands);
+            Task task = tasks.get(taskNumber);
+            task.markDone();
+            ui.showTaskMarked(task);
+        }
+        case UNMARK -> {
+            int taskNumber = getTaskNumber(commands);
+            Task task = tasks.get(taskNumber);
+            task.unmarkDone();
+            ui.showTaskUnmarked(task);
+        }
+        case LIST -> ui.printTaskList(tasks);
+        case DELETE -> {
+            int taskNumber = getTaskNumber(commands);
+            Task deletedTask = tasks.delete(taskNumber);
+            ui.printMessage("    Successfully deleted task: " + deletedTask);
+        }
+        case TODO, DEADLINE, EVENT -> addTask(input);
+        case BYE -> {
+            // The main loop handles saving and displaying the goodbye message.
+        }
         }
     }
 
-    private static int getTaskNumber(String[] commands) throws DogeException {
+    private int getTaskNumber(String[] commands) throws DogeException {
         if (commands.length < 2 || commands[1].isBlank()) {
             throw new DogeException("Please provide a task number.");
         }
         return validateTaskNumber(commands[1]);
     }
 
-    private static void addTask(String text) {
+    private void addTask(String text) {
         try {
             Task task = Parser.parseTask(text);
             tasks.add(task);
@@ -95,19 +96,26 @@ public class Doge {
         }
     }
 
-    private static int validateTaskNumber(String numberText) throws DogeException {
-        int taskNumber;
-
+    private int validateTaskNumber(String numberText) throws DogeException {
         try {
-            taskNumber = Integer.parseInt(numberText);
+            int taskNumber = Integer.parseInt(numberText);
+
+            if (taskNumber < 1 || taskNumber > tasks.size()) {
+                throw new DogeException("That task number does not exist.");
+            }
+
+            return taskNumber;
         } catch (NumberFormatException e) {
             throw new DogeException("Please enter a valid task number.");
         }
+    }
 
-        if (taskNumber < 1 || taskNumber > tasks.size()) {
-            throw new DogeException("That task number does not exist.");
+    private TaskList loadTasks() {
+        try {
+            return storage.load();
+        } catch (DogeException e) {
+            ui.printMessage(e.getMessage());
+            return new TaskList();
         }
-
-        return taskNumber;
     }
 }

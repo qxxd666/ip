@@ -1,13 +1,13 @@
 package doge.model;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.Test;
+
 /**
- * Tests the public behaviour of {@link Task}.
+ * Tests the public behavior of {@link Task}.
  *
  * <p>Each test follows the same simple pattern: arrange the objects,
  * perform an action, and assert the result.</p>

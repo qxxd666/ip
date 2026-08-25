@@ -1,16 +1,17 @@
 package doge.parser;
 
+import doge.command.Command;
+import doge.exception.DogeException;
 import doge.model.Deadline;
 import doge.model.Event;
 import doge.model.Task;
 import doge.model.Todo;
-import doge.command.Command;
-import doge.exception.DogeException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/** Parses user input into task objects. */
 public class Parser {
 
     private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("d/M/uuuu HHmm");
@@ -18,6 +19,7 @@ public class Parser {
     private Parser() {
     }
 
+    /** Returns the task described by the given user command. */
     public static Task parseTask(String input) throws DogeException {
         String[] commandAndArguments = input.trim().split("\\s+", 2);
 
@@ -42,8 +44,7 @@ public class Parser {
     private static Deadline parseDeadline(String description) throws DogeException {
         String[] parts = description.split("\\s+/by\\s+", 2);
 
-        if (parts.length != 2 || parts[0].isBlank() ||
-                parts[1].isBlank()) {
+        if (parts.length != 2 || parts[0].isBlank() || parts[1].isBlank()) {
             throw new DogeException(
                     "Use this format: deadline DESCRIPTION /by d/M/yyyy HHmm");
         }
@@ -58,7 +59,8 @@ public class Parser {
 
     private static Event parseEvent(String description) throws DogeException {
         String[] fromParts = description.split("\\s+/from\\s+", 2);
-        if (fromParts.length != 2 || fromParts[0].isBlank() || fromParts[1].isBlank()) {
+        if (fromParts.length != 2 || fromParts[0].isBlank()
+                || fromParts[1].isBlank()) {
             throw new DogeException("Use this format: event DESCRIPTION /from START /to END");
         }
 

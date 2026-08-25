@@ -24,6 +24,10 @@ Unless the user says otherwise, assume that you are assisting a student working 
 
 # Project-specific requirements
 
+## Java coding standard:
+
+All Java production and test code in this project must follow the project skill [seedu-java-coding-standard](skills/seedu-java-coding-standard/SKILL.md), based on the SE-EDU basic and intermediate Java coding standard. Apply it when creating, reviewing, or modifying Java code.
+
 ## Java version:
 
 Ensure that Java 25 is used when running the application or build tasks. On macOS, use `sdk use java 25.0.3.fx-zulu` to switch to Java 25 if needed.
