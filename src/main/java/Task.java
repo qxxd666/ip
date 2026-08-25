@@ -23,5 +23,18 @@ public class Task {
     public void unmarkDone() {
         this.isDone = false;
     }
-}
 
+    public String getDescription() {
+        return description;
+    }
+
+    public boolean isDone() {
+        return isDone;
+    }
+
+    public String toStorageString() {
+        String status = isDone ? "1" : "0";
+        return "T | " + status + " | " + description;
+    }
+
+}

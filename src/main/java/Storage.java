@@ -1,0 +1,99 @@
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Storage {
+    private static final Path DATA_FILE = Path.of("data", "tasks.txt");
+
+    public void save(TaskList taskList) throws DogeException {
+        try {
+            Files.createDirectories(DATA_FILE.getParent());
+
+            List<String> lines = new ArrayList<>();
+
+            for (Task task : taskList.getTasks()) {
+                lines.add(task.toStorageString());
+            }
+
+            Files.write(
+                    DATA_FILE,
+                    lines,
+                    StandardCharsets.UTF_8,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING
+            );
+
+        } catch (IOException e) {
+            throw new DogeException("Could not save tasks.");
+        }
+    }
+
+    public TaskList load() throws DogeException {
+        TaskList taskList = new TaskList();
+
+        if (!Files.exists(DATA_FILE)) {
+            return taskList;
+        }
+
+        try {
+            List<String> lines = Files.readAllLines(DATA_FILE, StandardCharsets.UTF_8);
+
+            for (String line : lines) {
+                if (!line.isBlank()) {
+                    taskList.add(convertLineToTask(line));
+                }
+            }
+
+            return taskList;
+        } catch (IOException e) {
+            throw new DogeException("Could not load tasks.");
+        }
+    }
+
+    private Task convertLineToTask(String line) throws DogeException {
+        String[] parts = line.split("\\s*\\|\\s*", -1);
+        if (parts.length < 3) {
+            throw new DogeException("Invalid task data: " + line);
+        }
+
+        String type = parts[0];
+        String status = parts[1];
+
+        if (!status.equals("0") && !status.equals("1")) {
+            throw new DogeException("Invalid task data: " + line);
+        }
+
+        boolean isDone = status.equals("1");
+
+        Task task;
+        switch(type) {
+            case "T" -> {
+                if (parts.length != 3) {
+                    throw new DogeException("Invalid todo data: " + line);
+                }
+                task = new Todo(parts[2]);
+            }
+            case "D" -> {
+                if (parts.length != 4) {
+                    throw new DogeException("Invalid deadline data: " + line);
+                }
+                task = new Deadline(parts[2], parts[3]);
+            }
+            case "E" -> {
+                if (parts.length != 5) {
+                    throw new DogeException("Invalid event data: " + line);
+                }
+                task = new Event(parts[2], parts[3], parts[4]);
+            }
+            default -> throw new DogeException("Unknown task type: " + type);
+        }
+        if (isDone) {
+            task.markDone();
+        }
+        return task;
+    }
+}
