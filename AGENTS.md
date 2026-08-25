@@ -34,6 +34,7 @@ Ensure that Java 25 is used when running the application or build tasks. On macO
 
 ## Git
 
+All future commits, commit messages, branch names, and tags must follow the project skill [seedu-git-standard](skills/seedu-git-standard/SKILL.md), based on the SE-EDU Git conventions. Commit subjects must be imperative, capitalized, free of a trailing period, and no longer than 72 characters; non-trivial commits must include a 72-column-wrapped body explaining what changed and why. Use meaningful kebab-case branch names.
 Use lightweight tags unless the user requests an annotated tag.
 When proposing or creating a commit message, include enough detail to explain the rationale for the change.
 Do not commit or push unless explicitly asked.
