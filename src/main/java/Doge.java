@@ -2,10 +2,12 @@ public class Doge {
 
     private static UI ui;
     private static TaskList tasks;
+    private static Storage storage;
 
     public static void main(String[] args) {
         ui = new UI();
         tasks = new TaskList();
+        storage = new Storage();
         ui.showWelcome();
 
         while (true) {
@@ -16,6 +18,11 @@ public class Doge {
                 ui.printMessage(e.getMessage());
             }
             if (text.equals("bye")) {
+                try {
+                    storage.save(tasks);
+                } catch (DogeException e) {
+                    ui.printMessage(e.getMessage());
+                }
                 ui.showGoodbye();
                 break;
             }
