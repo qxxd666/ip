@@ -16,6 +16,9 @@ bin/
 # Java Class Files
 *.class
 
+# Data Save File
+data/tasks.txt
+
 # Temp files
 _temp/
 
