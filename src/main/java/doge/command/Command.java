@@ -9,6 +9,7 @@ public enum Command {
     MARK("mark"),
     UNMARK("unmark"),
     LIST("list"),
+    FIND("find"),
     BYE("bye"),
     DELETE("delete");
 

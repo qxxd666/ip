@@ -27,7 +27,7 @@ public class Parser {
         case TODO -> parseTodo(arguments);
         case DEADLINE -> parseDeadline(arguments);
         case EVENT -> parseEvent(arguments);
-        case MARK, UNMARK, LIST, BYE, DELETE ->
+        case MARK, UNMARK, LIST, FIND, BYE, DELETE ->
                 throw new DogeException("I don't understand that command");
         };
     }

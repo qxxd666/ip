@@ -4,6 +4,7 @@ import doge.model.Task;
 import doge.model.TaskList;
 
 import java.util.Scanner;
+import java.util.List;
 
 public class UI {
     private final String BANNER = "       ____   ___   ____ _____\n" +
@@ -64,5 +65,18 @@ public class UI {
         System.out.println(SEPARATOR);
         System.out.println(tasks.toString());
         System.out.println(SEPARATOR);
+    }
+
+    /**
+     * Displays the tasks matching a search keyword.
+     *
+     * @param matchingTasks tasks selected by the search
+     */
+    public void printMatchingTasks(List<Task> matchingTasks) {
+        StringBuilder output = new StringBuilder("    Here are the matching tasks in your list:");
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            output.append("\n    ").append(i + 1).append(".").append(matchingTasks.get(i));
+        }
+        printMessage(output.toString());
     }
 }

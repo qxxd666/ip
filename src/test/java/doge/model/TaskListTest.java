@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.List;
+
 /**
  * Tests the public behaviour of {@link TaskList}.
  */
@@ -87,6 +89,29 @@ class TaskListTest {
         tasks.unmarkDone(1);
 
         assertFalse(tasks.get(1).isDone());
+    }
+
+    @Test
+    void find_keywordProvided_returnsCaseInsensitiveDescriptionMatches() {
+        TaskList tasks = new TaskList();
+        Task matchingTodo = new Todo("Read a book");
+        Task nonMatchingTask = new Todo("Buy groceries");
+        Task matchingDeadline = new Todo("Return book");
+        tasks.add(matchingTodo);
+        tasks.add(nonMatchingTask);
+        tasks.add(matchingDeadline);
+
+        List<Task> matchingTasks = tasks.find("BOOK");
+
+        assertEquals(List.of(matchingTodo, matchingDeadline), matchingTasks);
+    }
+
+    @Test
+    void find_keywordHasNoMatches_returnsEmptyList() {
+        TaskList tasks = new TaskList();
+        tasks.add(new Todo("Read a book"));
+
+        assertTrue(tasks.find("concert").isEmpty());
     }
 
     @Test
