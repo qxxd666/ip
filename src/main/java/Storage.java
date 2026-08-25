@@ -3,8 +3,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class Storage {
     private static final Path DATA_FILE = Path.of("data", "tasks.txt");
@@ -81,13 +85,26 @@ public class Storage {
                 if (parts.length != 4) {
                     throw new DogeException("Invalid deadline data: " + line);
                 }
-                task = new Deadline(parts[2], parts[3]);
+
+                try {
+                    LocalDateTime deadline = LocalDateTime.parse(parts[3], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                    task = new Deadline(parts[2], deadline);
+                } catch (DateTimeParseException e) {
+                    throw new DogeException("Invalid deadline data: " + line);
+                }
+
             }
             case "E" -> {
                 if (parts.length != 5) {
                     throw new DogeException("Invalid event data: " + line);
                 }
-                task = new Event(parts[2], parts[3], parts[4]);
+                try {
+                    LocalDateTime start = LocalDateTime.parse(parts[3], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                    LocalDateTime end = LocalDateTime.parse(parts[4], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                    task = new Event(parts[2], start, end);
+                } catch (DateTimeParseException e) {
+                    throw new DogeException("Invalid event data: " + line);
+                }
             }
             default -> throw new DogeException("Unknown task type: " + type);
         }
