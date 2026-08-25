@@ -6,8 +6,14 @@ public class Doge {
 
     public static void main(String[] args) {
         ui = new UI();
-        tasks = new TaskList();
         storage = new Storage();
+
+        try {
+            tasks = storage.load();
+        } catch (DogeException e) {
+            ui.printMessage(e.getMessage());
+        }
+        
         ui.showWelcome();
 
         while (true) {
