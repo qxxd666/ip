@@ -2,6 +2,7 @@ package doge.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class TaskList {
     private List<Task> tasks;
@@ -36,6 +37,24 @@ public class TaskList {
 
     public void unmarkDone(int index) {
         tasks.get(index - 1).unmarkDone();
+    }
+
+    /**
+     * Returns tasks whose descriptions contain the given keyword.
+     * Matching is case-insensitive and follows the order in which tasks were added.
+     *
+     * @param keyword text to search for
+     * @return matching tasks, or an empty list if there are no matches
+     */
+    public List<Task> find(String keyword) {
+        String searchTerm = keyword.toLowerCase(Locale.ROOT);
+        List<Task> matchingTasks = new ArrayList<>();
+        for (Task task : tasks) {
+            if (task.getDescription().toLowerCase(Locale.ROOT).contains(searchTerm)) {
+                matchingTasks.add(task);
+            }
+        }
+        return matchingTasks;
     }
 
     @Override

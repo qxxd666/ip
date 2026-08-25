@@ -8,6 +8,8 @@ import doge.parser.Parser;
 import doge.storage.Storage;
 import doge.ui.UI;
 
+import java.util.List;
+
 public class Doge {
 
     private static UI ui;
@@ -66,6 +68,14 @@ public class Doge {
 
             case LIST -> {
                 ui.printTaskList(tasks);
+            }
+
+            case FIND -> {
+                if (commands.length < 2 || commands[1].isBlank()) {
+                    throw new DogeException("Please provide a keyword to find.");
+                }
+                List<Task> matchingTasks = tasks.find(commands[1]);
+                ui.printMatchingTasks(matchingTasks);
             }
 
             case DELETE -> {
