@@ -24,6 +24,10 @@ public class TaskList {
         return tasks.size();
     }
 
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
     public void markDone(int index) {
         tasks.get(index - 1).markDone();
     }
