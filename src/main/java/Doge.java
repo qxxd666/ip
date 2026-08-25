@@ -1,153 +1,78 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
 public class Doge {
+
+    private static UI ui;
+    private static TaskList tasks;
+
     public static void main(String[] args) {
-        final String BANNER = "       ____   ___   ____ _____\n" +
-                "      |  _ \\ / _ \\ / ___| ____|\n" +
-                "      | | | | | | | |  _|  _|\n" +
-                "      | |_| | |_| | |_| | |___\n" +
-                "      |____/ \\___/ \\____|_____|";
-        final String SEPARATOR = "    ____________________________________________________________";
+        ui = new UI();
+        tasks = new TaskList();
+        ui.showWelcome();
 
-        System.out.println(SEPARATOR);
-        System.out.println(BANNER);
-        System.out.println("    Rawr! I'm Doge.");
-        System.out.println("    What can I do for you?");
-        System.out.println(SEPARATOR);
-
-        Scanner scanner = new Scanner(System.in);
-        List<Task> tasks = new ArrayList<>();
-
-        mainLoop:
         while (true) {
-            System.out.println();
-            String text = scanner.nextLine().trim();
-            String[] commands = text.split(" ");
-            Command command;
+            String text = ui.readCommand();
             try {
-                command = Command.fromText(commands[0]);
+                processInput(text);
             } catch (DogeException e) {
-                System.out.println(SEPARATOR);
-                System.out.println("    " + e.getMessage());
-                System.out.println(SEPARATOR);
-                continue;
+                ui.printMessage(e.getMessage());
             }
-
-            switch (command) {
-            case MARK -> {
-                if (commands.length != 2) {
-                    printError("Use this format: mark TASK_NUMBER", SEPARATOR);
-                    continue;
-                }
-                String number = commands[1];
-                int taskNumber;
-                try {
-                    taskNumber = validateTaskNumber(number, tasks);
-                } catch (DogeException e) {
-                    System.out.println(SEPARATOR);
-                    System.out.println("    " + e.getMessage());
-                    System.out.println(SEPARATOR);
-                    continue;
-                }
-                tasks.get(taskNumber - 1).markDone();
-                System.out.println(SEPARATOR);
-                System.out.println("    Nice! I've marked this task as done:");
-                System.out.println("      " + tasks.get(taskNumber - 1));
-                System.out.println(SEPARATOR);
-            }
-            case UNMARK -> {
-                if (commands.length != 2) {
-                    printError("Use this format: unmark TASK_NUMBER", SEPARATOR);
-                    continue;
-                }
-                String number = commands[1];
-                int taskNumber;
-                try {
-                    taskNumber = validateTaskNumber(number, tasks);
-                } catch (DogeException e) {
-                    System.out.println(SEPARATOR);
-                    System.out.println("    " + e.getMessage());
-                    System.out.println(SEPARATOR);
-                    continue;
-                }
-                tasks.get(taskNumber - 1).unmarkDone();
-                System.out.println(SEPARATOR);
-                System.out.println("    OK, I've marked this task as not done yet:");
-                System.out.println("      " + tasks.get(taskNumber - 1));
-                System.out.println(SEPARATOR);
-            }
-            case BYE -> {
-                if (commands.length != 1) {
-                    printError("The bye command does not take any arguments.", SEPARATOR);
-                    continue;
-                }
-                System.out.println(SEPARATOR);
-                System.out.println("    Bye. Hope to see you again soon!");
-                System.out.println(SEPARATOR);
-                break mainLoop;
-            }
-            case LIST -> {
-                if (commands.length != 1) {
-                    printError("The list command does not take any arguments.", SEPARATOR);
-                    continue;
-                }
-                System.out.println(SEPARATOR);
-                System.out.println("    Here are the tasks in your list:");
-                for (int i = 0; i < tasks.size(); i++) {
-                    System.out.println("    " + (i + 1) + "." + tasks.get(i));
-                }
-                System.out.println(SEPARATOR);
-            }
-            case DELETE -> {
-                if (commands.length != 2) {
-                    printError("Use this format: delete TASK_NUMBER", SEPARATOR);
-                    continue;
-                }
-                int taskNumber;
-                try {
-                    taskNumber = validateTaskNumber(commands[1], tasks);
-                } catch (DogeException e) {
-                    System.out.println(SEPARATOR);
-                    System.out.println("    " + e.getMessage());
-                    System.out.println(SEPARATOR);
-                    continue;
-                }
-                String delTask = tasks.get(taskNumber - 1).toString();
-                tasks.remove(taskNumber - 1);
-                System.out.println(SEPARATOR);
-                System.out.println("    Successfully deleted task: " + delTask);
-                System.out.println(SEPARATOR);
-            }
-            case TODO, DEADLINE, EVENT -> addTask(text, tasks, SEPARATOR);
+            if (text.equals("bye")) {
+                ui.showGoodbye();
+                break;
             }
         }
     }
 
-    private static void addTask(String text, List<Task> tasks, String separator) {
+    private static void processInput(String input) throws DogeException {
+        String[] commands = input.split("\\s+");
+        Command command = Command.fromText(commands[0]);;
+        switch (command) {
+
+            case MARK -> {
+                int taskNumber = getTaskNumber(commands);
+                Task task = tasks.get(taskNumber);
+                task.markDone();
+                ui.showTaskMarked(task);
+            }
+
+            case UNMARK -> {
+                int taskNumber = getTaskNumber(commands);
+                Task task = tasks.get(taskNumber);
+                task.unmarkDone();
+                ui.showTaskUnmarked(task);
+            }
+
+            case LIST -> {
+                ui.printTaskList(tasks);
+            }
+
+            case DELETE -> {
+                int taskNumber = getTaskNumber(commands);
+                Task delTask = tasks.delete(taskNumber);
+                ui.printMessage("    Successfully deleted task: " + delTask);
+            }
+            case TODO, DEADLINE, EVENT -> addTask(input);
+
+        }
+    }
+
+    private static int getTaskNumber(String[] commands) throws DogeException {
+        if (commands.length < 2 || commands[1].isBlank()) {
+            throw new DogeException("Please provide a task number.");
+        }
+        return validateTaskNumber(commands[1]);
+    }
+
+    private static void addTask(String text) {
         try {
             Task task = Parser.parseTask(text);
             tasks.add(task);
-
-            System.out.println(separator);
-            System.out.println("    Woof! I have added: " + task);
-            System.out.println("    Now you have " + tasks.size() + " tasks in the list.");
-            System.out.println(separator);
+            ui.showTaskAdded(task, tasks.size());
         } catch (DogeException e) {
-            System.out.println(separator);
-            System.out.println("    " + e.getMessage());
-            System.out.println(separator);
+            ui.printMessage("    " + e.getMessage());
         }
     }
 
-    private static void printError(String message, String separator) {
-        System.out.println(separator);
-        System.out.println("    " + message);
-        System.out.println(separator);
-    }
-
-    private static int validateTaskNumber(String numberText, List<Task> tasks) throws DogeException {
+    private static int validateTaskNumber(String numberText) throws DogeException {
         int taskNumber;
 
         try {
