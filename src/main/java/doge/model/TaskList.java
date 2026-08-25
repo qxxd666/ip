@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-/** Stores tasks and provides one-based access for user commands. */
+
+/** Maintains the ordered collection of tasks used by the application. */
 public class TaskList {
     private final List<Task> tasks;
 
@@ -13,37 +14,37 @@ public class TaskList {
         tasks = new ArrayList<>();
     }
 
-    /** Adds a task to the end of this list. */
+    /** Adds a task to the end of the list. */
     public void add(Task task) {
         tasks.add(task);
     }
 
-    /** Returns the task at the given one-based index. */
+    /** Returns the task at a one-based index. */
     public Task get(int index) {
         return tasks.get(index - 1);
     }
 
-    /** Deletes and returns the task at the given one-based index. */
+    /** Removes and returns the task at a one-based index. */
     public Task delete(int index) {
         return tasks.remove(index - 1);
     }
 
-    /** Returns the number of tasks in this list. */
+    /** Returns the number of tasks in the list. */
     public int size() {
         return tasks.size();
     }
 
-    /** Returns the tasks in insertion order. */
+    /** Returns the underlying ordered task collection. */
     public List<Task> getTasks() {
         return tasks;
     }
 
-    /** Marks the task at the given one-based index as complete. */
+    /** Marks the task at a one-based index as completed. */
     public void markDone(int index) {
         tasks.get(index - 1).markDone();
     }
 
-    /** Marks the task at the given one-based index as incomplete. */
+    /** Marks the task at a one-based index as incomplete. */
     public void unmarkDone(int index) {
         tasks.get(index - 1).unmarkDone();
     }
@@ -66,6 +67,7 @@ public class TaskList {
         return matchingTasks;
     }
 
+    /** Returns a numbered, display-ready representation of all tasks. */
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder("    Here are the tasks in your list:");

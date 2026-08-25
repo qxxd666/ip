@@ -1,6 +1,6 @@
 package doge.model;
 
-/** Represents a task with a description and completion status. */
+/** Stores the description and completion status shared by all task types. */
 public class Task {
     protected final String description;
     protected boolean isDone;
@@ -11,17 +11,18 @@ public class Task {
         this.isDone = false;
     }
 
-    /** Returns the completion icon for this task. */
+    /** Returns {@code X} for a completed task and a blank space otherwise. */
     public String getStatusIcon() {
         return (isDone ? "X" : " "); // mark done task with X
     }
 
+    /** Returns the task in the format displayed by the user interface. */
     @Override
     public String toString() {
         return "[" + getStatusIcon() + "]" + " " + description;
     }
 
-    /** Marks this task as complete. */
+    /** Marks this task as completed. */
     public void markDone() {
         this.isDone = true;
     }
@@ -31,15 +32,17 @@ public class Task {
         this.isDone = false;
     }
 
+    /** Returns this task's description. */
     public String getDescription() {
         return description;
     }
 
+    /** Returns whether this task is completed. */
     public boolean isDone() {
         return isDone;
     }
 
-    /** Returns this task in the format used by persistent storage. */
+    /** Returns this task in the pipe-delimited format used for persistence. */
     public String toStorageString() {
         String status = isDone ? "1" : "0";
         return "T | " + status + " | " + description;

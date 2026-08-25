@@ -2,7 +2,7 @@ package doge.command;
 
 import doge.exception.DogeException;
 
-/** Represents a command accepted by Doge. */
+/** Represents a command that the user can enter in the Doge application. */
 public enum Command {
     TODO("todo"),
     DEADLINE("deadline"),
@@ -20,7 +20,7 @@ public enum Command {
         this.keyword = keyword;
     }
 
-    /** Returns the command represented by the given text. */
+    /** Returns the command represented by a keyword, or throws an error for an unknown keyword. */
     public static Command fromText(String text) throws DogeException {
         for (Command command : values()) {
             if (command.keyword.equals(text)) {

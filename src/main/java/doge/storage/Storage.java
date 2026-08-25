@@ -18,11 +18,12 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Saves and loads tasks from the application's data file. */
+
+/** Reads and writes tasks using the application's local data file. */
 public class Storage {
     private static final Path DATA_FILE = Path.of("data", "tasks.txt");
 
-    /** Saves all tasks in the given list. */
+    /** Saves all tasks to disk, replacing the existing data file. */
     public void save(TaskList taskList) throws DogeException {
         try {
             Files.createDirectories(DATA_FILE.getParent());
@@ -39,7 +40,7 @@ public class Storage {
         }
     }
 
-    /** Returns all tasks loaded from storage, or an empty list when no file exists. */
+    /** Loads tasks from disk, returning an empty list when no data file exists. */
     public TaskList load() throws DogeException {
         TaskList taskList = new TaskList();
 
@@ -62,6 +63,7 @@ public class Storage {
         }
     }
 
+    /** Converts one persisted task line into a task object with its saved status. */
     private Task convertLineToTask(String line) throws DogeException {
         String[] parts = line.split("\\s*\\|\\s*", -1);
         if (parts.length < 3) {

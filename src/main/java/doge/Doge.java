@@ -10,14 +10,18 @@ import doge.ui.UI;
 
 import java.util.List;
 
-/** Runs the Doge task management application. */
+
+/** Runs the Doge task-management application and coordinates its components. */
+
 public class Doge {
 
     private final UI ui;
     private final TaskList tasks;
     private final Storage storage;
 
-    /** Starts the application. */
+
+    /** Starts the command-line application and processes commands until the user exits. */
+
     public static void main(String[] args) {
         new Doge().run();
     }
@@ -51,6 +55,7 @@ public class Doge {
         }
     }
 
+    /** Executes a single user command after parsing its command keyword and arguments. */
     private void processInput(String input) throws DogeException {
         String[] commands = input.split("\\s+");
         Command command = Command.fromText(commands[0]);
@@ -98,6 +103,8 @@ public class Doge {
         }
     }
 
+
+    /** Extracts and validates the one-based task number from a command. */
     private int getTaskNumber(String[] commands) throws DogeException {
         if (commands.length < 2 || commands[1].isBlank()) {
             throw new DogeException("Please provide a task number.");
@@ -105,6 +112,7 @@ public class Doge {
         return validateTaskNumber(commands[1]);
     }
 
+    /** Parses a task command, adds the resulting task, and reports parsing errors. */
     private void addTask(String text) {
         try {
             Task task = Parser.parseTask(text);
@@ -115,9 +123,12 @@ public class Doge {
         }
     }
 
+
+    /** Converts a task number to an integer and verifies that it exists in the task list. */
     private int validateTaskNumber(String numberText) throws DogeException {
+        int taskNumber;
         try {
-            int taskNumber = Integer.parseInt(numberText);
+            taskNumber = Integer.parseInt(numberText);
 
             if (taskNumber < 1 || taskNumber > tasks.size()) {
                 throw new DogeException("That task number does not exist.");

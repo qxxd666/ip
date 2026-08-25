@@ -19,7 +19,7 @@ bin/
 # Data Save File
 data/tasks.txt
 
-# Temp files
+# Temp files\
 _temp/
 
 /text-ui-test/ACTUAL.TXT
