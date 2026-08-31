@@ -42,7 +42,7 @@ test {
 }
 
 application {
-    mainClass = 'doge.Doge'
+    mainClass = 'doge.Launcher'
 }
 
 jar {

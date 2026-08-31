@@ -81,11 +81,11 @@ public class UI {
      *
      * @param matchingTasks tasks selected by the search
      */
-    public void printMatchingTasks(List<Task> matchingTasks) {
+    public String printMatchingTasks(List<Task> matchingTasks) {
         StringBuilder output = new StringBuilder("    Here are the matching tasks in your list:");
         for (int i = 0; i < matchingTasks.size(); i++) {
             output.append("\n    ").append(i + 1).append(".").append(matchingTasks.get(i));
         }
-        printMessage(output.toString());
+        return output.toString();
     }
 }
