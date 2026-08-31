@@ -1,5 +1,7 @@
 package doge;
 
+import java.util.List;
+
 import doge.command.Command;
 import doge.exception.DogeException;
 import doge.model.Task;
@@ -7,9 +9,6 @@ import doge.model.TaskList;
 import doge.parser.Parser;
 import doge.storage.Storage;
 import doge.ui.UI;
-
-import java.util.List;
-
 
 /** Runs the Doge task-management application and coordinates its components. */
 
@@ -20,16 +19,15 @@ public class Doge {
     private final Storage storage;
 
 
-    /** Starts the command-line application and processes commands until the user exits. */
-
-    public static void main(String[] args) {
-        new Doge().run();
-    }
-
     Doge() {
         ui = new UI();
         storage = new Storage();
         tasks = loadTasks();
+    }
+
+    /** Starts the command-line application and processes commands until the user exits. */
+    public static void main(String[] args) {
+        new Doge().run();
     }
 
     private void run() {
@@ -97,18 +95,20 @@ public class Doge {
                 Task delTask = tasks.delete(taskNumber);
                 ui.printMessage("    Successfully deleted task: " + delTask);
             }
-            
-            case TODO, DEADLINE, EVENT -> addTask(input);
 
+            case TODO, DEADLINE, EVENT -> addTask(input);
+            default -> {
+                // All command values are handled above.
+            }
         }
     }
 
     /**
-            * Executes a command from the graphical user interface and returns a
-            response.
-            * @param input command entered by the user
-   * @return response message for the graphical user interface
-   */
+     * Executes a command from the graphical user interface and returns a response.
+     *
+     * @param input command entered by the user
+     * @return response message for the graphical user interface
+     */
     public String getResponse(String input) {
         try {
             String[] commands = input.trim().split("\\s+");

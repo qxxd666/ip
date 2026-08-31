@@ -6,10 +6,9 @@ import java.time.format.DateTimeFormatter;
 
 /** Represents a task that must be completed by a specific date and time. */
 public class Deadline extends Task {
-    private final LocalDateTime by;
-
     private static final DateTimeFormatter DISPLAY_FORMATTER =
             DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
+    private final LocalDateTime by;
 
     /** Creates an incomplete deadline task. */
     public Deadline(String description, LocalDateTime by) {

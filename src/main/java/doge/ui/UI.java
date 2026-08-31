@@ -1,18 +1,18 @@
 package doge.ui;
 
+import java.util.List;
+import java.util.Scanner;
+
 import doge.model.Task;
 import doge.model.TaskList;
 
-import java.util.Scanner;
-import java.util.List;
-
 /** Handles console input and output for the Doge application. */
 public class UI {
-    private static final String BANNER = "       ____   ___   ____ _____\n" +
-            "      |  _ \\ / _ \\ / ___| ____|\n" +
-            "      | | | | | | | |  _|  _|\n" +
-            "      | |_| | |_| | |_| | |___\n" +
-            "      |____/ \\___/ \\____|_____|";
+    private static final String BANNER = "       ____   ___   ____ _____\n"
+            + "      |  _ \\ / _ \\ / ___| ____|\n"
+            + "      | | | | | | | |  _|  _|\n"
+            + "      | |_| | |_| | |_| | |___\n"
+            + "      |____/ \\___/ \\____|_____|";
     private static final String SEPARATOR = "    ____________________________________________________________";
 
     private final Scanner scanner = new Scanner(System.in);

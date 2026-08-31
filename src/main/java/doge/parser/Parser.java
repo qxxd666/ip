@@ -1,16 +1,15 @@
 package doge.parser;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 import doge.command.Command;
 import doge.exception.DogeException;
 import doge.model.Deadline;
 import doge.model.Event;
 import doge.model.Task;
 import doge.model.Todo;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-
 
 /** Converts user-entered task commands into task objects. */
 public class Parser {
@@ -27,11 +26,11 @@ public class Parser {
         Command command = Command.fromText(commandAndArguments[0]);
         String arguments = commandAndArguments.length == 2 ? commandAndArguments[1] : "";
         return switch (command) {
-        case TODO -> parseTodo(arguments);
-        case DEADLINE -> parseDeadline(arguments);
-        case EVENT -> parseEvent(arguments);
-        case MARK, UNMARK, LIST, FIND, BYE, DELETE ->
-                throw new DogeException("I don't understand that command");
+            case TODO -> parseTodo(arguments);
+            case DEADLINE -> parseDeadline(arguments);
+            case EVENT -> parseEvent(arguments);
+            case MARK, UNMARK, LIST, FIND, BYE, DELETE ->
+                    throw new DogeException("I don't understand that command");
         };
     }
 
