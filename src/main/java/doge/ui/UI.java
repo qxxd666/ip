@@ -1,18 +1,18 @@
 package doge.ui;
 
+import java.util.List;
+import java.util.Scanner;
+
 import doge.model.Task;
 import doge.model.TaskList;
 
-import java.util.Scanner;
-import java.util.List;
-
 /** Handles console input and output for the Doge application. */
 public class UI {
-    private static final String BANNER = "       ____   ___   ____ _____\n" +
-            "      |  _ \\ / _ \\ / ___| ____|\n" +
-            "      | | | | | | | |  _|  _|\n" +
-            "      | |_| | |_| | |_| | |___\n" +
-            "      |____/ \\___/ \\____|_____|";
+    private static final String BANNER = "       ____   ___   ____ _____\n"
+            + "      |  _ \\ / _ \\ / ___| ____|\n"
+            + "      | | | | | | | |  _|  _|\n"
+            + "      | |_| | |_| | |_| | |___\n"
+            + "      |____/ \\___/ \\____|_____|";
     private static final String SEPARATOR = "    ____________________________________________________________";
 
     private final Scanner scanner = new Scanner(System.in);
@@ -81,11 +81,11 @@ public class UI {
      *
      * @param matchingTasks tasks selected by the search
      */
-    public void printMatchingTasks(List<Task> matchingTasks) {
+    public String printMatchingTasks(List<Task> matchingTasks) {
         StringBuilder output = new StringBuilder("    Here are the matching tasks in your list:");
         for (int i = 0; i < matchingTasks.size(); i++) {
             output.append("\n    ").append(i + 1).append(".").append(matchingTasks.get(i));
         }
-        printMessage(output.toString());
+        return output.toString();
     }
 }

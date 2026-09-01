@@ -6,11 +6,10 @@ import java.time.format.DateTimeFormatter;
 
 /** Represents a task that occurs during a specified time interval. */
 public class Event extends Task {
-    private final LocalDateTime from;
-    private final LocalDateTime to;
-
     private static final DateTimeFormatter DISPLAY_FORMATTER =
             DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
+    private final LocalDateTime from;
+    private final LocalDateTime to;
 
     /** Creates an incomplete event task with a start and end time. */
     public Event(String description, LocalDateTime from, LocalDateTime to) {

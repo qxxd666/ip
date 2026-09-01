@@ -2,7 +2,7 @@ package doge.model;
 
 
 /** Represents a task without a deadline or event time. */
-public class Todo extends Task{
+public class Todo extends Task {
 
     /** Creates an incomplete todo with the given description. */
     public Todo(String description) {
