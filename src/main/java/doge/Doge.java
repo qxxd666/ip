@@ -61,16 +61,12 @@ public class Doge {
         switch (command) {
 
             case MARK -> {
-                int taskNumber = getTaskNumber(commands);
-                Task task = tasks.get(taskNumber);
-                task.markDone();
+                Task task = markTask(commands);
                 ui.showTaskMarked(task);
             }
 
             case UNMARK -> {
-                int taskNumber = getTaskNumber(commands);
-                Task task = tasks.get(taskNumber);
-                task.unmarkDone();
+                Task task = unmarkTask(commands);
                 ui.showTaskUnmarked(task);
             }
 
@@ -79,10 +75,7 @@ public class Doge {
             }
 
             case FIND -> {
-                if (commands.length < 2 || commands[1].isBlank()) {
-                    throw new DogeException("Please provide a keyword to find.");
-                }
-                List<Task> matchingTasks = tasks.find(commands[1]);
+                List<Task> matchingTasks = findMatchingTasks(commands);
                 ui.printMessage(ui.printMatchingTasks(matchingTasks));
             }
 
@@ -91,8 +84,7 @@ public class Doge {
             }
 
             case DELETE -> {
-                int taskNumber = getTaskNumber(commands);
-                Task delTask = tasks.delete(taskNumber);
+                Task delTask = deleteTask(commands);
                 ui.printMessage("    Successfully deleted task: " + delTask);
             }
 
@@ -116,22 +108,16 @@ public class Doge {
 
             return switch (command) {
                 case MARK -> {
-                    Task task = tasks.get(getTaskNumber(commands));
-                    task.markDone();
+                    Task task = markTask(commands);
                     yield "Nice! I've marked this task as done:\n" + task;
                 }
                 case UNMARK -> {
-                    Task task = tasks.get(getTaskNumber(commands));
-                    task.unmarkDone();
+                    Task task = unmarkTask(commands);
                     yield "Okay, I've marked this task as not done:\n" + task;
                 }
                 case LIST -> tasks.toString();
                 case FIND -> {
-                    if (commands.length < 2 || commands[1].isBlank()) {
-                        throw new DogeException("Please provide a keyword to find.");
-                    }
-
-                    List<Task> matchingTasks = tasks.find(commands[1]);
+                    List<Task> matchingTasks = findMatchingTasks(commands);
                     yield ui.printMatchingTasks(matchingTasks);
                 }
                 case BYE -> {
@@ -139,7 +125,7 @@ public class Doge {
                     yield "Bye. Hope to see you again soon!";
                 }
                 case DELETE -> {
-                    Task deletedTask = tasks.delete(getTaskNumber(commands));
+                    Task deletedTask = deleteTask(commands);
                     yield "Successfully deleted task: " + deletedTask;
                 }
                 case TODO, DEADLINE, EVENT -> {
@@ -160,6 +146,33 @@ public class Doge {
             throw new DogeException("Please provide a task number.");
         }
         return validateTaskNumber(commands[1]);
+    }
+
+    /** Marks the task selected by a command as completed. */
+    private Task markTask(String[] commands) throws DogeException {
+        Task task = tasks.get(getTaskNumber(commands));
+        task.markDone();
+        return task;
+    }
+
+    /** Marks the task selected by a command as incomplete. */
+    private Task unmarkTask(String[] commands) throws DogeException {
+        Task task = tasks.get(getTaskNumber(commands));
+        task.unmarkDone();
+        return task;
+    }
+
+    /** Removes and returns the task selected by a command. */
+    private Task deleteTask(String[] commands) throws DogeException {
+        return tasks.delete(getTaskNumber(commands));
+    }
+
+    /** Returns the tasks matching the keyword supplied in a command. */
+    private List<Task> findMatchingTasks(String[] commands) throws DogeException {
+        if (commands.length < 2 || commands[1].isBlank()) {
+            throw new DogeException("Please provide a keyword to find.");
+        }
+        return tasks.find(commands[1]);
     }
 
     /** Parses a task command, adds the resulting task, and reports parsing errors. */
