@@ -16,16 +16,19 @@ public class TaskList {
 
     /** Adds a task to the end of the list. */
     public void add(Task task) {
+        assert task != null : "A task list must not contain null tasks";
         tasks.add(task);
     }
 
     /** Returns the task at a one-based index. */
     public Task get(int index) {
+        assert isValidIndex(index) : "Task index must be one-based and within the list";
         return tasks.get(index - 1);
     }
 
     /** Removes and returns the task at a one-based index. */
     public Task delete(int index) {
+        assert isValidIndex(index) : "Task index must be one-based and within the list";
         return tasks.remove(index - 1);
     }
 
@@ -41,11 +44,13 @@ public class TaskList {
 
     /** Marks the task at a one-based index as completed. */
     public void markDone(int index) {
+        assert isValidIndex(index) : "Task index must be one-based and within the list";
         tasks.get(index - 1).markDone();
     }
 
     /** Marks the task at a one-based index as incomplete. */
     public void unmarkDone(int index) {
+        assert isValidIndex(index) : "Task index must be one-based and within the list";
         tasks.get(index - 1).unmarkDone();
     }
 
@@ -57,6 +62,7 @@ public class TaskList {
      * @return matching tasks, or an empty list if there are no matches
      */
     public List<Task> find(String keyword) {
+        assert keyword != null : "Search keyword must not be null";
         String searchTerm = keyword.toLowerCase(Locale.ROOT);
         List<Task> matchingTasks = new ArrayList<>();
         for (Task task : tasks) {
@@ -75,5 +81,10 @@ public class TaskList {
             result.append("\n").append("    ").append(i + 1).append(".").append(tasks.get(i));
         }
         return result.toString();
+    }
+
+    /** Returns whether an index follows this class's one-based indexing contract. */
+    private boolean isValidIndex(int index) {
+        return index >= 1 && index <= tasks.size();
     }
 }

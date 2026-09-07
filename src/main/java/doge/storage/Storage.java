@@ -64,6 +64,7 @@ public class Storage {
 
     /** Converts one persisted task line into a task object with its saved status. */
     private Task convertLineToTask(String line) throws DogeException {
+        assert line != null && !line.isBlank() : "Only non-blank lines can be converted to tasks";
         String[] parts = line.split("\\s*\\|\\s*", -1);
         if (parts.length < 3) {
             throw new DogeException("Invalid task data: " + line);
@@ -114,6 +115,7 @@ public class Storage {
             default -> throw new DogeException("Unknown task type: " + type);
         }
 
+        assert task != null : "A valid persisted task line must produce a task";
         if (isDone) {
             task.markDone();
         }
