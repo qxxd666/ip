@@ -7,6 +7,7 @@ public class Task {
 
     /** Creates an incomplete task with the given description. */
     public Task(String description) {
+        assert description != null : "A task must have a non-null description";
         this.description = description;
         this.isDone = false;
     }

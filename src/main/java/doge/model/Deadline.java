@@ -13,6 +13,7 @@ public class Deadline extends Task {
     /** Creates an incomplete deadline task. */
     public Deadline(String description, LocalDateTime by) {
         super(description);
+        assert by != null : "A deadline must have a date and time";
         this.by = by;
     }
 
