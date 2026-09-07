@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 /**
@@ -13,16 +14,16 @@ import org.junit.jupiter.api.Test;
  */
 class TaskListTest {
 
-    @Test
     /** Verifies that a new task list starts empty. */
+    @Test
     void constructor_newTaskList_hasNoTasks() {
         TaskList tasks = new TaskList();
 
         assertEquals(0, tasks.size());
     }
 
-    @Test
     /** Verifies that adding a task increases the list size. */
+    @Test
     void add_taskProvided_increasesListSize() {
         TaskList tasks = new TaskList();
 
@@ -31,8 +32,8 @@ class TaskListTest {
         assertEquals(1, tasks.size());
     }
 
-    @Test
     /** Verifies that tasks are retrieved using one-based indexes. */
+    @Test
     void get_taskIndexProvided_returnsTaskAtOneBasedIndex() {
         TaskList tasks = new TaskList();
         Task firstTask = new Todo("First task");
@@ -44,8 +45,8 @@ class TaskListTest {
         assertSame(secondTask, tasks.get(2));
     }
 
-    @Test
     /** Verifies that deleting a task removes and returns the selected task. */
+    @Test
     void delete_taskIndexProvided_removesAndReturnsTask() {
         TaskList tasks = new TaskList();
         Task firstTask = new Todo("First task");
@@ -60,8 +61,8 @@ class TaskListTest {
         assertSame(secondTask, tasks.get(1));
     }
 
-    @Test
     /** Verifies that tasks are returned in insertion order. */
+    @Test
     void getTasks_taskListHasTasks_returnsTasksInInsertionOrder() {
         TaskList tasks = new TaskList();
         Task firstTask = new Todo("First task");
@@ -74,8 +75,8 @@ class TaskListTest {
         assertSame(secondTask, tasks.getTasks().get(1));
     }
 
-    @Test
     /** Verifies that the selected task can be marked as done. */
+    @Test
     void markDone_taskIndexProvided_marksTaskAsDone() {
         TaskList tasks = new TaskList();
         tasks.add(new Todo("Read about JUnit"));
@@ -85,8 +86,8 @@ class TaskListTest {
         assertTrue(tasks.get(1).isDone());
     }
 
-    @Test
     /** Verifies that the selected task can be marked as not done. */
+    @Test
     void unmarkDone_taskIndexProvided_marksTaskAsNotDone() {
         TaskList tasks = new TaskList();
         tasks.add(new Todo("Read about JUnit"));
@@ -120,16 +121,16 @@ class TaskListTest {
         assertTrue(tasks.find("concert").isEmpty());
     }
 
-    @Test
     /** Verifies the display of an empty task list. */
+    @Test
     void toString_emptyTaskList_returnsHeaderOnly() {
         TaskList tasks = new TaskList();
 
         assertEquals("    Here are the tasks in your list:", tasks.toString());
     }
 
-    @Test
     /** Verifies the numbered display of a non-empty task list. */
+    @Test
     void toString_taskListHasTasks_returnsNumberedTaskList() {
         TaskList tasks = new TaskList();
         tasks.add(new Todo("First task"));
