@@ -4,12 +4,14 @@ package doge.model;
 public class Task {
     protected final String description;
     protected boolean isDone;
+    private int priority;
 
     /** Creates an incomplete task with the given description. */
     public Task(String description) {
         assert description != null : "A task must have a non-null description";
         this.description = description;
         this.isDone = false;
+        this.priority = 0;
     }
 
     /** Returns {@code X} for a completed task and a blank space otherwise. */
@@ -20,7 +22,8 @@ public class Task {
     /** Returns the task in the format displayed by the user interface. */
     @Override
     public String toString() {
-        return "[" + getStatusIcon() + "]" + " " + description;
+        String priorityLabel = priority == 0 ? "" : "[P" + priority + "]";
+        return "[" + getStatusIcon() + "]" + priorityLabel + " " + description;
     }
 
     /** Marks this task as completed. */
@@ -43,10 +46,22 @@ public class Task {
         return isDone;
     }
 
+    /** Returns this task's priority level, where zero means no priority is set. */
+    public int getPriority() {
+        return priority;
+    }
+
+    /** Sets this task's priority level. A level of zero clears the priority. */
+    public void setPriority(int priority) {
+        assert priority >= 0 : "A task priority must not be negative";
+        this.priority = priority;
+    }
+
     /** Returns this task in the pipe-delimited format used for persistence. */
     public String toStorageString() {
         String status = isDone ? "1" : "0";
-        return "T | " + status + " | " + description;
+        String taskData = "T | " + status + " | " + description;
+        return priority == 0 ? taskData : taskData + " | " + priority;
     }
 
 }

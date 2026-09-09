@@ -123,6 +123,25 @@ class TaskTest {
         assertTrue(task.isDone());
     }
 
+    /** Verifies that a new task has no priority. */
+    @Test
+    void getPriority_newTask_returnsNoPriority() {
+        Task task = new Task("Read about JUnit");
+
+        assertEquals(0, task.getPriority());
+    }
+
+    /** Verifies that a priority level can be attached to a task. */
+    @Test
+    void setPriority_taskProvided_setsPriorityLevel() {
+        Task task = new Task("Read about JUnit");
+
+        task.setPriority(1);
+
+        assertEquals(1, task.getPriority());
+        assertEquals("[ ][P1] Read about JUnit", task.toString());
+    }
+
     /** Verifies the persisted representation of an incomplete task. */
     @Test
     void toStorageString_incompleteTask_returnsTaskStorageFormat() {
@@ -138,5 +157,14 @@ class TaskTest {
         task.markDone();
 
         assertEquals("T | 1 | Read about JUnit", task.toStorageString());
+    }
+
+    /** Verifies that a set priority is included in the persisted representation. */
+    @Test
+    void toStorageString_prioritizedTask_includesPriorityLevel() {
+        Task task = new Task("Read about JUnit");
+        task.setPriority(1);
+
+        assertEquals("T | 0 | Read about JUnit | 1", task.toStorageString());
     }
 }
