@@ -26,7 +26,8 @@ public class Deadline extends Task {
     @Override
     public String toStorageString() {
         String status = isDone ? "1" : "0";
-        return "D | " + status + " | " + description + " | " + by;
+        String taskData = "D | " + status + " | " + description + " | " + by;
+        return getPriority() == 0 ? taskData : taskData + " | " + getPriority();
     }
 
     /** Returns this deadline in the format displayed by the user interface. */

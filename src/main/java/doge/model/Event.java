@@ -34,7 +34,8 @@ public class Event extends Task {
     @Override
     public String toStorageString() {
         String status = isDone ? "1" : "0";
-        return "E | " + status + " | " + description + " | " + from + " | " + to;
+        String taskData = "E | " + status + " | " + description + " | " + from + " | " + to;
+        return getPriority() == 0 ? taskData : taskData + " | " + getPriority();
     }
 
     /** Returns this event in the format displayed by the user interface. */

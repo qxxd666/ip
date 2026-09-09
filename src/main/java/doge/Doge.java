@@ -70,6 +70,16 @@ public class Doge {
                 ui.showTaskUnmarked(task);
             }
 
+            case PRIORITY -> {
+                Task task = setPriority(commands);
+                ui.printMessage("    Successfully set task priority: " + task);
+            }
+
+            case UNPRIORITY -> {
+                Task task = clearPriority(commands);
+                ui.printMessage("    Successfully cleared task priority: " + task);
+            }
+
             case LIST -> {
                 ui.printTaskList(tasks);
             }
@@ -114,6 +124,14 @@ public class Doge {
                 case UNMARK -> {
                     Task task = unmarkTask(commands);
                     yield "Okay, I've marked this task as not done:\n" + task;
+                }
+                case PRIORITY -> {
+                    Task task = setPriority(commands);
+                    yield "Successfully set task priority:\n" + task;
+                }
+                case UNPRIORITY -> {
+                    Task task = clearPriority(commands);
+                    yield "Successfully cleared task priority:\n" + task;
                 }
                 case LIST -> tasks.toString();
                 case FIND -> {
@@ -160,6 +178,40 @@ public class Doge {
         Task task = tasks.get(getTaskNumber(commands));
         task.unmarkDone();
         return task;
+    }
+
+    /** Sets the selected task's priority, defaulting to level 1 when omitted. */
+    private Task setPriority(String[] commands) throws DogeException {
+        if (commands.length < 2 || commands.length > 3) {
+            throw new DogeException("Use this format: priority TASK_NUMBER [LEVEL]");
+        }
+        int priority = commands.length == 2 ? 1 : parsePriority(commands[2]);
+        Task task = tasks.get(getTaskNumber(commands));
+        task.setPriority(priority);
+        return task;
+    }
+
+    /** Clears the selected task's priority. */
+    private Task clearPriority(String[] commands) throws DogeException {
+        if (commands.length != 2) {
+            throw new DogeException("Use this format: unpriority TASK_NUMBER");
+        }
+        Task task = tasks.get(getTaskNumber(commands));
+        task.setPriority(0);
+        return task;
+    }
+
+    /** Parses a positive priority level. */
+    private int parsePriority(String priorityText) throws DogeException {
+        try {
+            int priority = Integer.parseInt(priorityText);
+            if (priority < 1) {
+                throw new DogeException("Priority level must be at least 1.");
+            }
+            return priority;
+        } catch (NumberFormatException e) {
+            throw new DogeException("Priority level must be a positive number.");
+        }
     }
 
     /** Removes and returns the task selected by a command. */

@@ -81,13 +81,13 @@ public class Storage {
 
         switch (type) {
             case "T" -> {
-                if (parts.length != 3) {
+                if (parts.length != 3 && parts.length != 4) {
                     throw new DogeException("Invalid todo data: " + line);
                 }
                 task = new Todo(parts[2]);
             }
             case "D" -> {
-                if (parts.length != 4) {
+                if (parts.length != 4 && parts.length != 5) {
                     throw new DogeException("Invalid deadline data: " + line);
                 }
                 try {
@@ -99,7 +99,7 @@ public class Storage {
                 }
             }
             case "E" -> {
-                if (parts.length != 5) {
+                if (parts.length != 5 && parts.length != 6) {
                     throw new DogeException("Invalid event data: " + line);
                 }
                 try {
@@ -118,6 +118,18 @@ public class Storage {
         assert task != null : "A valid persisted task line must produce a task";
         if (isDone) {
             task.markDone();
+        }
+        int priorityIndex = type.equals("T") ? 3 : type.equals("D") ? 4 : 5;
+        if (parts.length > priorityIndex) {
+            try {
+                int priority = Integer.parseInt(parts[priorityIndex]);
+                if (priority < 0) {
+                    throw new NumberFormatException();
+                }
+                task.setPriority(priority);
+            } catch (NumberFormatException e) {
+                throw new DogeException("Invalid task priority data: " + line);
+            }
         }
         return task;
     }
