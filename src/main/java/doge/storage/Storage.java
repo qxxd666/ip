@@ -20,19 +20,30 @@ import doge.model.Todo;
 
 /** Reads and writes tasks using the application's local data file. */
 public class Storage {
-    private static final Path DATA_FILE = Path.of("data", "tasks.txt");
+    private static final Path DEFAULT_DATA_FILE = Path.of("data", "tasks.txt");
+    private final Path dataFile;
+
+    /** Creates storage backed by the application's default data file. */
+    public Storage() {
+        this(DEFAULT_DATA_FILE);
+    }
+
+    /** Creates storage backed by the supplied data file. */
+    Storage(Path dataFile) {
+        this.dataFile = dataFile;
+    }
 
     /** Saves all tasks to disk, replacing the existing data file. */
     public void save(TaskList taskList) throws DogeException {
         try {
-            Files.createDirectories(DATA_FILE.getParent());
+            Files.createDirectories(dataFile.getParent());
             List<String> lines = new ArrayList<>();
 
             for (Task task : taskList.getTasks()) {
                 lines.add(task.toStorageString());
             }
 
-            Files.write(DATA_FILE, lines, StandardCharsets.UTF_8,
+            Files.write(dataFile, lines, StandardCharsets.UTF_8,
                     StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
             throw new DogeException("Could not save tasks.");
@@ -43,12 +54,12 @@ public class Storage {
     public TaskList load() throws DogeException {
         TaskList taskList = new TaskList();
 
-        if (!Files.exists(DATA_FILE)) {
+        if (!Files.exists(dataFile)) {
             return taskList;
         }
 
         try {
-            List<String> lines = Files.readAllLines(DATA_FILE, StandardCharsets.UTF_8);
+            List<String> lines = Files.readAllLines(dataFile, StandardCharsets.UTF_8);
 
             for (String line : lines) {
                 if (!line.isBlank()) {

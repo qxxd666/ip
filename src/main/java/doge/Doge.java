@@ -158,6 +158,11 @@ public class Doge {
         }
     }
 
+    /** Saves the current task list so callers can persist state during application shutdown. */
+    public void saveTasks() throws DogeException {
+        storage.save(tasks);
+    }
+
     /** Extracts and validates the one-based task number from a command. */
     private int getTaskNumber(String[] commands) throws DogeException {
         if (commands.length < 2 || commands[1].isBlank()) {

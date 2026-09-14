@@ -2,6 +2,7 @@ package doge;
 
 import java.io.IOException;
 
+import doge.exception.DogeException;
 import doge.ui.MainWindow;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -29,8 +30,17 @@ public class Main extends Application {
             Scene scene = new Scene(ap);
             stage.setScene(scene);
             fxmlLoader.<MainWindow>getController().setDoge(doge); // inject the Doge instance
+            stage.setOnCloseRequest(event -> saveTasksOnClose());
             stage.show();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveTasksOnClose() {
+        try {
+            doge.saveTasks();
+        } catch (DogeException e) {
             e.printStackTrace();
         }
     }
