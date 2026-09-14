@@ -2,6 +2,7 @@ package doge.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -166,5 +167,19 @@ class TaskTest {
         task.setPriority(1);
 
         assertEquals("T | 0 | Read about JUnit | 1", task.toStorageString());
+    }
+
+    /** Verifies that a null description is rejected even when assertions are disabled. */
+    @Test
+    void constructor_nullDescription_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> new Task(null));
+    }
+
+    /** Verifies that a negative priority is rejected. */
+    @Test
+    void setPriority_negativePriority_throwsIllegalArgumentException() {
+        Task task = new Task("Read about JUnit");
+
+        assertThrows(IllegalArgumentException.class, () -> task.setPriority(-1));
     }
 }

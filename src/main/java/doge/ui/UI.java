@@ -28,7 +28,7 @@ public class UI {
 
     /** Reads and trims one command from standard input. */
     public String readCommand() {
-        return scanner.nextLine().trim();
+        return scanner.hasNextLine() ? scanner.nextLine().trim() : "bye";
     }
 
     /** Displays a message between the application's separators. */

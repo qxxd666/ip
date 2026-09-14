@@ -1,6 +1,5 @@
 package doge.model;
 
-
 /** Represents a task without a deadline or event time. */
 public class Todo extends Task {
 

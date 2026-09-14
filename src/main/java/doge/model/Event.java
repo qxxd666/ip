@@ -3,7 +3,6 @@ package doge.model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-
 /** Represents a task that occurs during a specified time interval. */
 public class Event extends Task {
     private static final DateTimeFormatter DISPLAY_FORMATTER =
@@ -14,8 +13,9 @@ public class Event extends Task {
     /** Creates an incomplete event task with a start and end time. */
     public Event(String description, LocalDateTime from, LocalDateTime to) {
         super(description);
-        assert from != null : "An event must have a start date and time";
-        assert to != null : "An event must have an end date and time";
+        if (from == null || to == null) {
+            throw new IllegalArgumentException("An event must have a start and end date and time");
+        }
         this.from = from;
         this.to = to;
     }

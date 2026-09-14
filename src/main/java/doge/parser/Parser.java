@@ -3,6 +3,7 @@ package doge.parser;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 
 import doge.command.Command;
 import doge.exception.DogeException;
@@ -14,13 +15,17 @@ import doge.model.Todo;
 /** Converts user-entered task commands into task objects. */
 public class Parser {
 
-    private static final DateTimeFormatter INPUT_FORMATTER = DateTimeFormatter.ofPattern("d/M/uuuu HHmm");
+    private static final DateTimeFormatter INPUT_FORMATTER =
+            DateTimeFormatter.ofPattern("d/M/uuuu HHmm").withResolverStyle(ResolverStyle.STRICT);
 
     private Parser() {
     }
 
     /** Parses a todo, deadline, or event command into its corresponding task. */
     public static Task parseTask(String input) throws DogeException {
+        if (input == null || input.isBlank()) {
+            throw new DogeException("Please enter a command.");
+        }
         String[] commandAndArguments = input.trim().split("\\s+", 2);
 
         Command command = Command.fromText(commandAndArguments[0]);

@@ -2,13 +2,17 @@ package doge.model;
 
 /** Stores the description and completion status shared by all task types. */
 public class Task {
+    /** Stores the user-facing task description. */
     protected final String description;
+    /** Stores whether this task has been completed. */
     protected boolean isDone;
     private int priority;
 
     /** Creates an incomplete task with the given description. */
     public Task(String description) {
-        assert description != null : "A task must have a non-null description";
+        if (description == null) {
+            throw new IllegalArgumentException("A task must have a non-null description");
+        }
         this.description = description;
         this.isDone = false;
         this.priority = 0;
@@ -53,7 +57,9 @@ public class Task {
 
     /** Sets this task's priority level. A level of zero clears the priority. */
     public void setPriority(int priority) {
-        assert priority >= 0 : "A task priority must not be negative";
+        if (priority < 0) {
+            throw new IllegalArgumentException("A task priority must not be negative");
+        }
         this.priority = priority;
     }
 

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-
 /** Maintains the ordered collection of tasks used by the application. */
 public class TaskList {
     private final List<Task> tasks;
@@ -16,19 +15,21 @@ public class TaskList {
 
     /** Adds a task to the end of the list. */
     public void add(Task task) {
-        assert task != null : "A task list must not contain null tasks";
+        if (task == null) {
+            throw new IllegalArgumentException("A task list must not contain null tasks");
+        }
         tasks.add(task);
     }
 
     /** Returns the task at a one-based index. */
     public Task get(int index) {
-        assert isValidIndex(index) : "Task index must be one-based and within the list";
+        validateIndex(index);
         return tasks.get(index - 1);
     }
 
     /** Removes and returns the task at a one-based index. */
     public Task delete(int index) {
-        assert isValidIndex(index) : "Task index must be one-based and within the list";
+        validateIndex(index);
         return tasks.remove(index - 1);
     }
 
@@ -44,13 +45,13 @@ public class TaskList {
 
     /** Marks the task at a one-based index as completed. */
     public void markDone(int index) {
-        assert isValidIndex(index) : "Task index must be one-based and within the list";
+        validateIndex(index);
         tasks.get(index - 1).markDone();
     }
 
     /** Marks the task at a one-based index as incomplete. */
     public void unmarkDone(int index) {
-        assert isValidIndex(index) : "Task index must be one-based and within the list";
+        validateIndex(index);
         tasks.get(index - 1).unmarkDone();
     }
 
@@ -62,7 +63,9 @@ public class TaskList {
      * @return matching tasks, or an empty list if there are no matches
      */
     public List<Task> find(String keyword) {
-        assert keyword != null : "Search keyword must not be null";
+        if (keyword == null) {
+            throw new IllegalArgumentException("Search keyword must not be null");
+        }
         String searchTerm = keyword.toLowerCase(Locale.ROOT);
         List<Task> matchingTasks = new ArrayList<>();
         for (Task task : tasks) {
@@ -86,5 +89,11 @@ public class TaskList {
     /** Returns whether an index follows this class's one-based indexing contract. */
     private boolean isValidIndex(int index) {
         return index >= 1 && index <= tasks.size();
+    }
+
+    private void validateIndex(int index) {
+        if (!isValidIndex(index)) {
+            throw new IndexOutOfBoundsException("Task index must be one-based and within the list");
+        }
     }
 }

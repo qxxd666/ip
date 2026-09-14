@@ -10,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import doge.exception.DogeException;
 import doge.model.Deadline;
@@ -30,13 +31,15 @@ public class Storage {
 
     /** Creates storage backed by the supplied data file. */
     Storage(Path dataFile) {
-        this.dataFile = dataFile;
+        this.dataFile = Objects.requireNonNull(dataFile);
     }
 
     /** Saves all tasks to disk, replacing the existing data file. */
     public void save(TaskList taskList) throws DogeException {
         try {
-            Files.createDirectories(dataFile.getParent());
+            if (dataFile.getParent() != null) {
+                Files.createDirectories(dataFile.getParent());
+            }
             List<String> lines = new ArrayList<>();
 
             for (Task task : taskList.getTasks()) {
@@ -45,7 +48,7 @@ public class Storage {
 
             Files.write(dataFile, lines, StandardCharsets.UTF_8,
                     StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-        } catch (IOException e) {
+        } catch (IOException | SecurityException e) {
             throw new DogeException("Could not save tasks.");
         }
     }
@@ -54,11 +57,10 @@ public class Storage {
     public TaskList load() throws DogeException {
         TaskList taskList = new TaskList();
 
-        if (!Files.exists(dataFile)) {
-            return taskList;
-        }
-
         try {
+            if (!Files.exists(dataFile)) {
+                return taskList;
+            }
             List<String> lines = Files.readAllLines(dataFile, StandardCharsets.UTF_8);
 
             for (String line : lines) {
@@ -68,7 +70,7 @@ public class Storage {
             }
 
             return taskList;
-        } catch (IOException e) {
+        } catch (IOException | SecurityException e) {
             throw new DogeException("Could not load tasks.");
         }
     }
@@ -83,7 +85,7 @@ public class Storage {
 
         String type = parts[0];
         String status = parts[1];
-        if (!status.equals("0") && !status.equals("1")) {
+        if ((!status.equals("0") && !status.equals("1")) || parts[2].isBlank()) {
             throw new DogeException("Invalid task data: " + line);
         }
 

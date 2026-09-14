@@ -24,6 +24,9 @@ public enum Command {
 
     /** Returns the command represented by a keyword, or throws an error for an unknown keyword. */
     public static Command fromText(String text) throws DogeException {
+        if (text == null || text.isBlank()) {
+            throw new DogeException("Please enter a command.");
+        }
         for (Command command : values()) {
             if (command.keyword.equals(text)) {
                 return command;

@@ -3,7 +3,6 @@ package doge.model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-
 /** Represents a task that must be completed by a specific date and time. */
 public class Deadline extends Task {
     private static final DateTimeFormatter DISPLAY_FORMATTER =
@@ -13,7 +12,9 @@ public class Deadline extends Task {
     /** Creates an incomplete deadline task. */
     public Deadline(String description, LocalDateTime by) {
         super(description);
-        assert by != null : "A deadline must have a date and time";
+        if (by == null) {
+            throw new IllegalArgumentException("A deadline must have a date and time");
+        }
         this.by = by;
     }
 

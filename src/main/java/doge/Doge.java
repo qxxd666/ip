@@ -11,14 +11,13 @@ import doge.storage.Storage;
 import doge.ui.UI;
 
 /** Runs the Doge task-management application and coordinates its components. */
-
 public class Doge {
 
     private final UI ui;
     private final TaskList tasks;
     private final Storage storage;
 
-
+    /** Creates Doge with tasks loaded from local storage. */
     Doge() {
         ui = new UI();
         storage = new Storage();
@@ -55,6 +54,9 @@ public class Doge {
 
     /** Executes a single user command after parsing its command keyword and arguments. */
     public void processInput(String input) throws DogeException {
+        if (input == null || input.isBlank()) {
+            throw new DogeException("Please enter a command.");
+        }
         String[] commands = input.split("\\s+");
         Command command = Command.fromText(commands[0]);
 
@@ -81,15 +83,18 @@ public class Doge {
             }
 
             case LIST -> {
+                validateCommandLength(commands, 1, "list");
                 ui.printTaskList(tasks);
             }
 
             case FIND -> {
+                validateCommandLength(commands, 2, "find KEYWORD");
                 List<Task> matchingTasks = findMatchingTasks(commands);
                 ui.printMessage(ui.printMatchingTasks(matchingTasks));
             }
 
             case BYE -> {
+                validateCommandLength(commands, 1, "bye");
                 // The main loop handles saving and displaying the goodbye message.
             }
 
@@ -112,6 +117,9 @@ public class Doge {
      * @return response message for the graphical user interface
      */
     public String getResponse(String input) {
+        if (input == null || input.isBlank()) {
+            return "Oops, much confusion: Please enter a command.";
+        }
         try {
             String[] commands = input.trim().split("\\s+");
             Command command = Command.fromText(commands[0]);
@@ -133,12 +141,17 @@ public class Doge {
                     Task task = clearPriority(commands);
                     yield "Priority removed. Such simplicity:\n" + task;
                 }
-                case LIST -> tasks.toString();
+                case LIST -> {
+                    validateCommandLength(commands, 1, "list");
+                    yield tasks.toString();
+                }
                 case FIND -> {
+                    validateCommandLength(commands, 2, "find KEYWORD");
                     List<Task> matchingTasks = findMatchingTasks(commands);
                     yield ui.printMatchingTasks(matchingTasks);
                 }
                 case BYE -> {
+                    validateCommandLength(commands, 1, "bye");
                     storage.save(tasks);
                     yield "Much farewell! See you on the next walk.";
                 }
@@ -173,6 +186,7 @@ public class Doge {
 
     /** Marks the task selected by a command as completed. */
     private Task markTask(String[] commands) throws DogeException {
+        validateCommandLength(commands, 2, "mark TASK_NUMBER");
         Task task = tasks.get(getTaskNumber(commands));
         task.markDone();
         return task;
@@ -180,6 +194,7 @@ public class Doge {
 
     /** Marks the task selected by a command as incomplete. */
     private Task unmarkTask(String[] commands) throws DogeException {
+        validateCommandLength(commands, 2, "unmark TASK_NUMBER");
         Task task = tasks.get(getTaskNumber(commands));
         task.unmarkDone();
         return task;
@@ -221,6 +236,7 @@ public class Doge {
 
     /** Removes and returns the task selected by a command. */
     private Task deleteTask(String[] commands) throws DogeException {
+        validateCommandLength(commands, 2, "delete TASK_NUMBER");
         return tasks.delete(getTaskNumber(commands));
     }
 
@@ -230,6 +246,14 @@ public class Doge {
             throw new DogeException("please provide a keyword to find.");
         }
         return tasks.find(commands[1]);
+    }
+
+    /** Rejects commands with missing or unexpected arguments. */
+    private void validateCommandLength(String[] commands, int expectedLength, String usage)
+            throws DogeException {
+        if (commands.length != expectedLength) {
+            throw new DogeException("Please use this format: " + usage);
+        }
     }
 
     /** Parses a task command, adds the resulting task, and reports parsing errors. */

@@ -29,13 +29,17 @@ public class MainWindow extends AnchorPane {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
-    /** Injects the Doge instance */
-    public void setDoge(Doge d) {
-        doge = d;
+    /**
+     * Injects the Doge instance used to process user commands.
+     *
+     * @param doge application logic used by this window.
+     */
+    public void setDoge(Doge doge) {
+        this.doge = doge;
     }
 
     /**
-     * Creates two dialog boxes, one echoing user input and the other containing Duke's reply and then appends them to
+     * Creates two dialog boxes, one echoing user input and the other containing Doge's reply, then appends them to
      * the dialog container. Clears the user input after processing.
      */
     @FXML

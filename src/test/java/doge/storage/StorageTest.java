@@ -18,6 +18,7 @@ import doge.model.Event;
 import doge.model.Task;
 import doge.model.TaskList;
 import doge.model.Todo;
+
 /** Tests persistence and validation of task data. */
 class StorageTest {
 
@@ -89,6 +90,15 @@ class StorageTest {
     void loadFile_invalidPriority_throwsDogeException() throws IOException {
         Path dataFile = temporaryDirectory.resolve("tasks.txt");
         Files.writeString(dataFile, "T | 0 | Walk Doge | nope", StandardCharsets.UTF_8);
+
+        assertThrows(DogeException.class, () -> new Storage(dataFile).load());
+    }
+
+    /** Verifies that persisted tasks with blank descriptions are rejected. */
+    @Test
+    void loadFile_blankDescription_throwsDogeException() throws IOException {
+        Path dataFile = temporaryDirectory.resolve("tasks.txt");
+        Files.writeString(dataFile, "T | 0 |   ", StandardCharsets.UTF_8);
 
         assertThrows(DogeException.class, () -> new Storage(dataFile).load());
     }

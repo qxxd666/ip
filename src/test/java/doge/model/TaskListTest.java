@@ -3,6 +3,7 @@ package doge.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -139,5 +140,23 @@ class TaskListTest {
         assertEquals("    Here are the tasks in your list:\n"
                 + "    1.[T][ ] First task\n"
                 + "    2.[T][ ] Second task", tasks.toString());
+    }
+
+    /** Verifies that invalid one-based indexes are rejected explicitly. */
+    @Test
+    void get_invalidIndex_throwsIndexOutOfBoundsException() {
+        TaskList tasks = new TaskList();
+
+        assertThrows(IndexOutOfBoundsException.class, () -> tasks.get(0));
+        assertThrows(IndexOutOfBoundsException.class, () -> tasks.get(1));
+    }
+
+    /** Verifies that a null task and null search keyword are rejected explicitly. */
+    @Test
+    void addOrFind_nullArgument_throwsIllegalArgumentException() {
+        TaskList tasks = new TaskList();
+
+        assertThrows(IllegalArgumentException.class, () -> tasks.add(null));
+        assertThrows(IllegalArgumentException.class, () -> tasks.find(null));
     }
 }

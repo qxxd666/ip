@@ -32,4 +32,13 @@ class CommandTest {
 
         assertEquals("I don't understand that command", exception.getMessage());
     }
+
+    /** Verifies that blank and null keywords produce a helpful exception. */
+    @Test
+    void fromText_blankOrNullKeyword_throwsDogeException() {
+        assertEquals("Please enter a command.",
+                assertThrows(DogeException.class, () -> Command.fromText(" ")).getMessage());
+        assertEquals("Please enter a command.",
+                assertThrows(DogeException.class, () -> Command.fromText(null)).getMessage());
+    }
 }

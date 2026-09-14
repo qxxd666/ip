@@ -13,6 +13,7 @@ import doge.model.Deadline;
 import doge.model.Event;
 import doge.model.Task;
 import doge.model.Todo;
+
 /** Tests parsing of all supported task command formats and validation errors. */
 class ParserTest {
 
@@ -78,5 +79,14 @@ class ParserTest {
     @Test
     void parseTask_nonTaskCommand_throwsDogeException() {
         assertThrows(DogeException.class, () -> Parser.parseTask("list"));
+    }
+
+    /** Verifies that null and blank task input produce a helpful exception. */
+    @Test
+    void parseTask_blankOrNullInput_throwsDogeException() {
+        assertEquals("Please enter a command.",
+                assertThrows(DogeException.class, () -> Parser.parseTask(" ")).getMessage());
+        assertEquals("Please enter a command.",
+                assertThrows(DogeException.class, () -> Parser.parseTask(null)).getMessage());
     }
 }
