@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
@@ -24,9 +23,7 @@ public class MainWindow extends AnchorPane {
 
     private Doge doge;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private Image dukeImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
-
+    /** Initializes automatic scrolling for the conversation area. */
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
@@ -46,9 +43,15 @@ public class MainWindow extends AnchorPane {
         String input = userInput.getText();
         String response = doge.getResponse(input);
         dialogContainer.getChildren().addAll(
-                DialogBox.getUserDialog(input, userImage),
-                DialogBox.getDukeDialog(response, dukeImage)
+                DialogBox.getUserDialog(input),
+                DialogBox.getDogeDialog(response, isErrorResponse(response))
         );
         userInput.clear();
+    }
+
+    /** Returns whether Doge's response is a validation or command error. */
+    private boolean isErrorResponse(String response) {
+        String lowerCaseResponse = response.toLowerCase();
+        return lowerCaseResponse.startsWith("oops") || lowerCaseResponse.startsWith("error");
     }
 }

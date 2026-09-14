@@ -72,12 +72,12 @@ public class Doge {
 
             case PRIORITY -> {
                 Task task = setPriority(commands);
-                ui.printMessage("    Successfully set task priority: " + task);
+                ui.printMessage("    Much priority! I boosted this task:\n      " + task);
             }
 
             case UNPRIORITY -> {
                 Task task = clearPriority(commands);
-                ui.printMessage("    Successfully cleared task priority: " + task);
+                ui.printMessage("    Priority removed. Such simplicity:\n      " + task);
             }
 
             case LIST -> {
@@ -95,7 +95,7 @@ public class Doge {
 
             case DELETE -> {
                 Task delTask = deleteTask(commands);
-                ui.printMessage("    Successfully deleted task: " + delTask);
+                ui.printMessage("    Task sent to the dog park (deleted):\n      " + delTask);
             }
 
             case TODO, DEADLINE, EVENT -> addTask(input);
@@ -119,19 +119,19 @@ public class Doge {
             return switch (command) {
                 case MARK -> {
                     Task task = markTask(commands);
-                    yield "Nice! I've marked this task as done:\n" + task;
+                    yield "Much progress! This task is now done:\n" + task;
                 }
                 case UNMARK -> {
                     Task task = unmarkTask(commands);
-                    yield "Okay, I've marked this task as not done:\n" + task;
+                    yield "No zoomies yet: this task is back on the list:\n" + task;
                 }
                 case PRIORITY -> {
                     Task task = setPriority(commands);
-                    yield "Successfully set task priority:\n" + task;
+                    yield "Much priority! I boosted this task:\n" + task;
                 }
                 case UNPRIORITY -> {
                     Task task = clearPriority(commands);
-                    yield "Successfully cleared task priority:\n" + task;
+                    yield "Priority removed. Such simplicity:\n" + task;
                 }
                 case LIST -> tasks.toString();
                 case FIND -> {
@@ -140,28 +140,28 @@ public class Doge {
                 }
                 case BYE -> {
                     storage.save(tasks);
-                    yield "Bye. Hope to see you again soon!";
+                    yield "Much farewell! See you on the next walk.";
                 }
                 case DELETE -> {
                     Task deletedTask = deleteTask(commands);
-                    yield "Successfully deleted task: " + deletedTask;
+                    yield "Task sent to the dog park (deleted):\n" + deletedTask;
                 }
                 case TODO, DEADLINE, EVENT -> {
                     Task task = Parser.parseTask(input);
                     tasks.add(task);
-                    yield "Woof! I have added: " + task
-                            + "\nNow you have " + tasks.size() + " tasks in the list.";
+                    yield "Much add! New task fetched:\n" + task
+                            + "\nYour pack now has " + tasks.size() + " tasks.";
                 }
             };
         } catch (DogeException e) {
-            return e.getMessage();
+            return "Oops, much confusion: " + e.getMessage();
         }
     }
 
     /** Extracts and validates the one-based task number from a command. */
     private int getTaskNumber(String[] commands) throws DogeException {
         if (commands.length < 2 || commands[1].isBlank()) {
-            throw new DogeException("Please provide a task number.");
+            throw new DogeException("please provide a task number.");
         }
         return validateTaskNumber(commands[1]);
     }
@@ -183,7 +183,7 @@ public class Doge {
     /** Sets the selected task's priority, defaulting to level 1 when omitted. */
     private Task setPriority(String[] commands) throws DogeException {
         if (commands.length < 2 || commands.length > 3) {
-            throw new DogeException("Use this format: priority TASK_NUMBER [LEVEL]");
+            throw new DogeException("try this format: priority TASK_NUMBER [LEVEL]");
         }
         int priority = commands.length == 2 ? 1 : parsePriority(commands[2]);
         Task task = tasks.get(getTaskNumber(commands));
@@ -194,7 +194,7 @@ public class Doge {
     /** Clears the selected task's priority. */
     private Task clearPriority(String[] commands) throws DogeException {
         if (commands.length != 2) {
-            throw new DogeException("Use this format: unpriority TASK_NUMBER");
+            throw new DogeException("try this format: unpriority TASK_NUMBER");
         }
         Task task = tasks.get(getTaskNumber(commands));
         task.setPriority(0);
@@ -206,11 +206,11 @@ public class Doge {
         try {
             int priority = Integer.parseInt(priorityText);
             if (priority < 1) {
-                throw new DogeException("Priority level must be at least 1.");
+                throw new DogeException("priority level must be at least 1.");
             }
             return priority;
         } catch (NumberFormatException e) {
-            throw new DogeException("Priority level must be a positive number.");
+            throw new DogeException("priority level must be a positive number.");
         }
     }
 
@@ -222,7 +222,7 @@ public class Doge {
     /** Returns the tasks matching the keyword supplied in a command. */
     private List<Task> findMatchingTasks(String[] commands) throws DogeException {
         if (commands.length < 2 || commands[1].isBlank()) {
-            throw new DogeException("Please provide a keyword to find.");
+            throw new DogeException("please provide a keyword to find.");
         }
         return tasks.find(commands[1]);
     }
@@ -246,12 +246,12 @@ public class Doge {
             taskNumber = Integer.parseInt(numberText);
 
             if (taskNumber < 1 || taskNumber > tasks.size()) {
-                throw new DogeException("That task number does not exist.");
+                throw new DogeException("that task number is not in the pack.");
             }
 
             return taskNumber;
         } catch (NumberFormatException e) {
-            throw new DogeException("Please enter a valid task number.");
+            throw new DogeException("please enter a valid task number.");
         }
     }
 

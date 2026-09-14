@@ -1,30 +1,21 @@
 package doge.ui;
 
 import java.io.IOException;
-import java.util.Collections;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 
 /**
- * Represents a dialog box consisting of an ImageView to represent the speaker's face
- * and a label containing text from the speaker.
+ * Represents one compact, styled message in the conversation.
  */
 public class DialogBox extends HBox {
     @FXML
     private Label dialog;
-    @FXML
-    private ImageView displayPicture;
 
-    private DialogBox(String text, Image img) {
+    private DialogBox(String text) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("/view/DialogBox.fxml"));
             fxmlLoader.setController(this);
@@ -35,27 +26,23 @@ public class DialogBox extends HBox {
         }
 
         dialog.setText(text);
-        displayPicture.setImage(img);
+        getStyleClass().add("dialog-box");
     }
 
-    /**
-     * Flips the dialog box such that the ImageView is on the left and text on the right.
-     */
-    private void flip() {
-        ObservableList<Node> tmp = FXCollections.observableArrayList(this.getChildren());
-        Collections.reverse(tmp);
-        getChildren().setAll(tmp);
-        setAlignment(Pos.TOP_LEFT);
-        dialog.getStyleClass().add("reply-label");
+    /** Returns a right-aligned message representing the user's command. */
+    public static DialogBox getUserDialog(String text) {
+        DialogBox dialogBox = new DialogBox(text);
+        dialogBox.getStyleClass().add("user-message");
+        return dialogBox;
     }
 
-    public static DialogBox getUserDialog(String text, Image img) {
-        return new DialogBox(text, img);
-    }
-
-    public static DialogBox getDukeDialog(String text, Image img) {
-        var db = new DialogBox(text, img);
-        db.flip();
-        return db;
+    /** Returns a left-aligned message representing Doge's response. */
+    public static DialogBox getDogeDialog(String text, boolean isError) {
+        DialogBox dialogBox = new DialogBox(text);
+        HBox.setHgrow(dialogBox.dialog, Priority.ALWAYS);
+        if (isError) {
+            dialogBox.getStyleClass().add("error-message");
+        }
+        return dialogBox;
     }
 }

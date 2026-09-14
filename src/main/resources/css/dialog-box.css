@@ -1,42 +1,33 @@
-.label {
-    background:white;
-    -fx-background-color: background;
-    -fx-border-color: #d55e00 #009e73 #cc79a7 #0072b2;
-    -fx-border-width: 2px;
-    -fx-background-radius: 1em 1em 0 1em;
-    -fx-border-radius: 1em 1em 0 1em;
-    -fx-text-fill: ladder(background, white 49%, black 50%);
+.dialog-box {
+    -fx-alignment: center-left;
 }
 
-
-.reply-label {
-    -fx-background-radius: 1em 1em 1em 0;
-    -fx-border-radius: 1em 1em 1em 0;
+.dialog-label {
+    -fx-background-color: #fffdf5;
+    -fx-background-radius: 4px 16px 16px 16px;
+    -fx-border-color: #eadcae;
+    -fx-border-radius: 4px 16px 16px 16px;
+    -fx-border-width: 1px;
+    -fx-padding: 10px 14px;
+    -fx-text-fill: #4d4027;
+    -fx-font-size: 14px;
+    -fx-line-spacing: 2px;
 }
 
-/* Paste this below reply-label */
-.add-label {
-    -fx-background-color: yellow;
+.user-message {
+    -fx-alignment: center-right;
 }
 
-.marked-label {
-    -fx-background-color: palegreen;
+.user-message .dialog-label {
+    -fx-background-color: #f5d76e;
+    -fx-background-radius: 16px 4px 16px 16px;
+    -fx-border-color: #e5bd45;
+    -fx-border-radius: 16px 4px 16px 16px;
+    -fx-text-fill: #4b391d;
 }
 
-.delete-label {
-    -fx-background-color: lightpink;
+.error-message .dialog-label {
+    -fx-background-color: #fff0e8;
+    -fx-border-color: #e28a68;
+    -fx-text-fill: #9a3f25;
 }
-
-
-#displayPicture {
-    /* Shadow effect on image. */
-    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 5, 5);
-
-    /* Change size of image. */
-    -fx-scale-x: 1;
-    -fx-scale-y: 1;
-
-    /* Rotate image clockwise by degrees. */
-    -fx-rotate: 0;
-}
-

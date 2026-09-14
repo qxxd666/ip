@@ -21,8 +21,8 @@ public class UI {
     public void showWelcome() {
         System.out.println(SEPARATOR);
         System.out.println(BANNER);
-        System.out.println("    Rawr! I'm Doge.");
-        System.out.println("    What can I do for you?");
+        System.out.println("    Much hello! I'm Doge, your task sidekick.");
+        System.out.println("    What shall we fetch today?");
         System.out.println(SEPARATOR);
     }
 
@@ -41,7 +41,7 @@ public class UI {
     /** Displays confirmation that a task was marked as completed. */
     public void showTaskMarked(Task task) {
         System.out.println(SEPARATOR);
-        System.out.println("    Nice! I've marked this task as done:");
+        System.out.println("    Much progress! This task is now done:");
         System.out.println("      " + task);
         System.out.println(SEPARATOR);
     }
@@ -49,7 +49,7 @@ public class UI {
     /** Displays confirmation that a task was marked as incomplete. */
     public void showTaskUnmarked(Task task) {
         System.out.println(SEPARATOR);
-        System.out.println("    Ok, I've marked this task as not done:");
+        System.out.println("    No zoomies yet: this task is back on the list:");
         System.out.println("      " + task);
         System.out.println(SEPARATOR);
     }
@@ -57,15 +57,15 @@ public class UI {
     /** Displays the application's goodbye message. */
     public void showGoodbye() {
         System.out.println(SEPARATOR);
-        System.out.println("    Bye. Hope to see you again soon!");
+        System.out.println("    Much farewell! See you on the next walk.");
         System.out.println(SEPARATOR);
     }
 
     /** Displays confirmation that a task was added. */
     public void showTaskAdded(Task task, int taskCount) {
         System.out.println(SEPARATOR);
-        System.out.println("    Woof! I have added: " + task);
-        System.out.println("    Now you have " + taskCount + " tasks in the list.");
+        System.out.println("    Much add! New task fetched: " + task);
+        System.out.println("    Your pack now has " + taskCount + " tasks.");
         System.out.println(SEPARATOR);
     }
 
@@ -82,7 +82,7 @@ public class UI {
      * @param matchingTasks tasks selected by the search
      */
     public String printMatchingTasks(List<Task> matchingTasks) {
-        StringBuilder output = new StringBuilder("    Here are the matching tasks in your list:");
+        StringBuilder output = new StringBuilder("    Sniff sniff... here are the matching tasks:");
         for (int i = 0; i < matchingTasks.size(); i++) {
             output.append("\n    ").append(i + 1).append(".").append(matchingTasks.get(i));
         }

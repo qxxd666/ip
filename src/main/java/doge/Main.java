@@ -19,9 +19,11 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         try {
-            stage.setMinHeight(400);
-            stage.setMinWidth(900);
-            stage.setMaxWidth(900);
+            stage.setTitle("Doge: Much Task, Very Organised");
+            stage.setMinHeight(420);
+            stage.setMinWidth(420);
+            stage.setWidth(760);
+            stage.setHeight(620);
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
@@ -33,4 +35,3 @@ public class Main extends Application {
         }
     }
 }
-
