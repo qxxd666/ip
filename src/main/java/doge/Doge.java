@@ -41,11 +41,6 @@ public class Doge {
             }
 
             if (text.equals("bye")) {
-                try {
-                    storage.save(tasks);
-                } catch (DogeException e) {
-                    ui.printMessage(e.getMessage());
-                }
                 ui.showGoodbye();
                 break;
             }
@@ -95,7 +90,7 @@ public class Doge {
 
             case BYE -> {
                 validateCommandLength(commands, 1, "bye");
-                // The main loop handles saving and displaying the goodbye message.
+                saveTasks();
             }
 
             case DELETE -> {

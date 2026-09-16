@@ -127,7 +127,7 @@ class TaskListTest {
     void toString_emptyTaskList_returnsHeaderOnly() {
         TaskList tasks = new TaskList();
 
-        assertEquals("    Here are the tasks in your list:", tasks.toString());
+        assertEquals("Here are the tasks in your list:", tasks.toString());
     }
 
     /** Verifies the numbered display of a non-empty task list. */
@@ -137,9 +137,9 @@ class TaskListTest {
         tasks.add(new Todo("First task"));
         tasks.add(new Todo("Second task"));
 
-        assertEquals("    Here are the tasks in your list:\n"
-                + "    1.[T][ ] First task\n"
-                + "    2.[T][ ] Second task", tasks.toString());
+        assertEquals("Here are the tasks in your list:\n"
+                + "1.[T][ ] First task\n"
+                + "2.[T][ ] Second task", tasks.toString());
     }
 
     /** Verifies that invalid one-based indexes are rejected explicitly. */

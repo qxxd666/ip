@@ -7,6 +7,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * Controller for the main GUI.
@@ -51,6 +52,16 @@ public class MainWindow extends AnchorPane {
                 DialogBox.getDogeDialog(response, isErrorResponse(response))
         );
         userInput.clear();
+
+        if (input.trim().equals("bye")) {
+            closeWindow();
+        }
+    }
+
+    /** Closes the JavaFX window after the bye command has saved the current tasks. */
+    private void closeWindow() {
+        Stage stage = (Stage) sendButton.getScene().getWindow();
+        stage.close();
     }
 
     /** Returns whether Doge's response is a validation or command error. */

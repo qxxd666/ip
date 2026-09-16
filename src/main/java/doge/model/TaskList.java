@@ -79,9 +79,9 @@ public class TaskList {
     /** Returns a numbered, display-ready representation of all tasks. */
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder("    Here are the tasks in your list:");
+        StringBuilder result = new StringBuilder("Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
-            result.append("\n").append("    ").append(i + 1).append(".").append(tasks.get(i));
+            result.append("\n").append(i + 1).append(".").append(tasks.get(i));
         }
         return result.toString();
     }
