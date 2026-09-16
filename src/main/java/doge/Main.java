@@ -21,10 +21,10 @@ public class Main extends Application {
     public void start(Stage stage) {
         try {
             stage.setTitle("Doge: Much Task, Very Organised");
-            stage.setMinHeight(420);
-            stage.setMinWidth(420);
-            stage.setWidth(760);
-            stage.setHeight(620);
+            stage.setMinHeight(500);
+            stage.setMinWidth(600);
+            stage.setWidth(1000);
+            stage.setHeight(760);
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
