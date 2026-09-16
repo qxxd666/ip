@@ -79,7 +79,7 @@ public class UI {
     /**
      * Displays the tasks matching a search keyword.
      *
-     * @param matchingTasks tasks selected by the search
+     * @param matchingTasks tasks selected by the search.
      */
     public String printMatchingTasks(List<Task> matchingTasks) {
         StringBuilder output = new StringBuilder("    Sniff sniff... here are the matching tasks:");

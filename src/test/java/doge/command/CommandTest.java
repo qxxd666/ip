@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
 import doge.exception.DogeException;
+
 /** Tests conversion from command keywords to {@link Command} values. */
 class CommandTest {
 

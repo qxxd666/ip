@@ -24,7 +24,7 @@ public class Doge {
         tasks = loadTasks();
     }
 
-    /** Starts the command-line application and processes commands until the user exits. */
+    /** Starts the command-line application. */
     public static void main(String[] args) {
         new Doge().run();
     }
@@ -108,8 +108,8 @@ public class Doge {
     /**
      * Executes a command from the graphical user interface and returns a response.
      *
-     * @param input command entered by the user
-     * @return response message for the graphical user interface
+     * @param input command entered by the user.
+     * @return response message for the graphical user interface.
      */
     public String getResponse(String input) {
         if (input == null || input.isBlank()) {

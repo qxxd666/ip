@@ -27,7 +27,7 @@ public class MainWindow extends AnchorPane {
     /** Initializes automatic scrolling for the conversation area. */
     @FXML
     public void initialize() {
-        scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+        dialogContainer.heightProperty().addListener((observable, oldHeight, newHeight) -> scrollPane.setVvalue(1.0));
     }
 
     /**

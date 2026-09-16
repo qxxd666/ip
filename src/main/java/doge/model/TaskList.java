@@ -6,11 +6,10 @@ import java.util.Locale;
 
 /** Maintains the ordered collection of tasks used by the application. */
 public class TaskList {
-    private final List<Task> tasks;
+    private final List<Task> tasks = new ArrayList<>();
 
     /** Creates an empty task list. */
     public TaskList() {
-        tasks = new ArrayList<>();
     }
 
     /** Adds a task to the end of the list. */
@@ -59,8 +58,8 @@ public class TaskList {
      * Returns tasks whose descriptions contain the given keyword.
      * Matching is case-insensitive and follows the order in which tasks were added.
      *
-     * @param keyword text to search for
-     * @return matching tasks, or an empty list if there are no matches
+     * @param keyword text to search for.
+     * @return matching tasks, or an empty list if there are no matches.
      */
     public List<Task> find(String keyword) {
         if (keyword == null) {
