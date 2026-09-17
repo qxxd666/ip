@@ -13,28 +13,16 @@ for users who prefer typing.
 - Java Development Kit (JDK) 25
 - IntelliJ IDEA, if you want to run the project from an IDE
 
-### Run from the command line
+### Download Jar file from latest release
 
-From the project root, run:
+From jar file location run:
 
 ```bash
-./gradlew run
-```
-
-On Windows, use:
-
-```bat
-gradlew.bat run
+java -jar "doge.jar"
 ```
 
 The Doge window opens with a command box at the bottom. Enter a command and press
 `Enter` or click **Fetch**.
-
-### Run from IntelliJ IDEA
-
-1. Open the project folder in IntelliJ IDEA.
-2. Configure the project SDK to use JDK 25.
-3. Open the Gradle tool window and run `Tasks > application > run`.
 
 ## Getting started
 
@@ -84,7 +72,7 @@ Adds a task that must be completed by a specified date and time.
 Format:
 
 ```text
-deadline DESCRIPTI3ON /by DATE TIME
+deadline DESCRIPTION /by DATE TIME
 ```
 
 Example:
