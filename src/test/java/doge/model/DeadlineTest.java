@@ -16,7 +16,7 @@ class DeadlineTest {
     void toString_incompleteDeadline_includesDueDate() {
         Deadline deadline = new Deadline("Submit report", DEADLINE);
 
-        assertEquals("[D][ ] Submit report (by: Jun 05 2026, 2:30 pm)", deadline.toString());
+        assertEquals("[D][ ] Submit report (by: Jun 05 2026, 2:30 PM)", deadline.toString());
     }
 
     /** Verifies that a completed deadline persists its status and timestamp. */

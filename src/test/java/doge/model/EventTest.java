@@ -17,7 +17,7 @@ class EventTest {
     void toString_event_includesStartAndEndTimes() {
         Event event = new Event("Team lunch", START, END);
 
-        assertEquals("[E][ ] Team lunch (from: Jun 05 2026, 12:00 pm to: Jun 05 2026, 1:30 pm)",
+        assertEquals("[E][ ] Team lunch (from: Jun 05 2026, 12:00 PM to: Jun 05 2026, 1:30 PM)",
                 event.toString());
     }
 

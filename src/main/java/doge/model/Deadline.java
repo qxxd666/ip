@@ -2,11 +2,12 @@ package doge.model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /** Represents a task that must be completed by a specific date and time. */
 public class Deadline extends Task {
     private static final DateTimeFormatter DISPLAY_FORMATTER =
-            DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
+            DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a", Locale.ENGLISH);
     private final LocalDateTime by;
 
     /** Creates an incomplete deadline task. */
