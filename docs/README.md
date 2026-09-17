@@ -84,7 +84,7 @@ Adds a task that must be completed by a specified date and time.
 Format:
 
 ```text
-deadline DESCRIPTION /by DATE TIME
+deadline DESCRIPTI3ON /by DATE TIME
 ```
 
 Example:
