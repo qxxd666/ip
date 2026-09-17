@@ -75,6 +75,16 @@ class ParserTest {
         assertThrows(DogeException.class, () -> Parser.parseTask("event Team lunch /from tomorrow /to later"));
     }
 
+    /** Verifies that an event's end time must be later than its start time. */
+    @Test
+    void parseTask_eventEndNotLaterThanStart_throwsDogeException() {
+        DogeException exception = assertThrows(DogeException.class,
+                () -> Parser.parseTask("event Team lunch /from 5/6/2026 1330 /to 5/6/2026 1200"));
+
+        assertEquals("The event's /to date and time must be later than its /from date and time.",
+                exception.getMessage());
+    }
+
     /** Verifies that non-task commands are rejected by the task parser. */
     @Test
     void parseTask_nonTaskCommand_throwsDogeException() {

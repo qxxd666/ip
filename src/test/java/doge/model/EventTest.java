@@ -1,6 +1,7 @@
 package doge.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
 
@@ -37,5 +38,12 @@ class EventTest {
         event.setPriority(3);
 
         assertEquals("E | 0 | Team lunch | 2026-06-05T12:00 | 2026-06-05T13:30 | 3", event.toStorageString());
+    }
+
+    /** Verifies that an event cannot end at or before its start time. */
+    @Test
+    void constructor_endNotLaterThanStart_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> new Event("Team lunch", END, START));
+        assertThrows(IllegalArgumentException.class, () -> new Event("Team lunch", START, START));
     }
 }

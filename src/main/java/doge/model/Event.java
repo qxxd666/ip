@@ -17,6 +17,10 @@ public class Event extends Task {
         if (from == null || to == null) {
             throw new IllegalArgumentException("An event must have a start and end date and time");
         }
+        if (!to.isAfter(from)) {
+            throw new IllegalArgumentException(
+                    "An event's end date and time must be later than its start date and time");
+        }
         this.from = from;
         this.to = to;
     }

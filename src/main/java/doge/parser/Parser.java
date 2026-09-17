@@ -81,6 +81,9 @@ public class Parser {
         try {
             LocalDateTime start = LocalDateTime.parse(toParts[0].trim(), INPUT_FORMATTER);
             LocalDateTime end = LocalDateTime.parse(toParts[1].trim(), INPUT_FORMATTER);
+            if (!end.isAfter(start)) {
+                throw new DogeException("The event's /to date and time must be later than its /from date and time.");
+            }
             return new Event(fromParts[0], start, end);
         } catch (DateTimeParseException e) {
             throw new DogeException("Please enter event dates as d/M/yyyy HHmm.");
